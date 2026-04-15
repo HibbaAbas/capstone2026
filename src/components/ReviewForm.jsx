@@ -178,7 +178,7 @@ function ReviewForm({ isOpen, onClose }) {
                                 </div>
 
                                 <div className="review-form__actions review-form__actions--right">
-                                    <button className="review-form__button review-form__button--primary" type="button" onClick={() => setCurrentStep(2)}>
+                                    <button className="review-form__button review-form__button--ghost review-form__button--next" type="button" onClick={() => setCurrentStep(2)}>
                                         Next Page
                                     </button>
                                 </div>

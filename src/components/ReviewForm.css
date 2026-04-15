@@ -86,8 +86,9 @@
 .review-form__label {
     margin: 0;
     color: #171717;
-    font-size: 1.05rem;
-    font-weight: 500;
+    font-size: 1.7rem;
+    font-weight: 400;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .review-form__hint {
@@ -106,10 +107,12 @@
 .review-form__input,
 .review-form__textarea {
     width: 100%;
-    border: 1px solid rgba(80, 91, 254, 0.85);
-    border-radius: 1rem;
+    border: 3px solid #4543C6;
+    border-radius: 25px;
     background: #ffffff;
     color: #171717;
+    padding: 20px;
+    gap: 10px;
 }
 
 .review-form__input {
@@ -121,7 +124,22 @@
 .review-form__textarea {
     min-height: 7.5rem;
     padding: 1rem 1.1rem;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 0.3rem;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0;
+    vertical-align: bottom;
     resize: vertical;
+}
+
+.review-form__textarea::placeholder {
+    color: #b7b7b7;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0;
 }
 
 .review-form__textarea--large {
@@ -221,6 +239,17 @@
     color: #27883d;
 }
 
+.review-form__button--next {
+    width: 502px;
+    min-width: 0;
+    min-height: 50px;
+    padding: 15px 200px;
+    border: 3px solid #21821c;
+    border-radius: 50px;
+    gap: 10px;
+    color: #21821c;
+}
+
 .review-form__page--advanced {
     padding-bottom: 2rem;
 }
@@ -275,7 +304,7 @@
 .review-form__section-label {
     margin: 1.2rem 0 1rem;
     color: #1e1e1e;
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 600;
 }
 
