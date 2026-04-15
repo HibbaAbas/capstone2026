@@ -5,10 +5,12 @@
  */
 import { useState } from 'react'
 import FilterPage from './filter'
+import ReviewForm from './components/ReviewForm'
 import './App.css'
 
 function App() {
   const [isFilterPageOpen, setIsFilterPageOpen] = useState(false)
+  const [isReviewOpen, setIsReviewOpen] = useState(false)
 
   if (isFilterPageOpen) {
     return <FilterPage onBack={() => setIsFilterPageOpen(false)} />
@@ -24,7 +26,16 @@ function App() {
         >
           Test Filter
         </button>
+        <button
+          className="test-review-button"
+          type="button"
+          onClick={() => setIsReviewOpen(true)}
+        >
+          Write Review
+        </button>
       </header>
+
+      <ReviewForm isOpen={isReviewOpen} onClose={() => setIsReviewOpen(false)} />
     </main>
   )
 }
