@@ -2,6 +2,8 @@ Parking/Transport
 Dedicated On-Site Parking
 Nearby Drop-Off/Pick-Up Point
 Accessible Shuttle Stop
+Electrical Vehicle Charging 
+Accessible by Bus
 
 Bathrooms
 Dedicated ADA Bathrooms

@@ -1,4 +1,9 @@
-/** This component is the rewiew form */
+/** This component is the review form. It consists of two pages, the quick review
+ * and the advanced review that the user can toggle between
+ * 
+ * TODO: quick review is required, make sure user can only toggle to second review 
+ * page only when quick review boxes are filled! . 
+*/
 /** This code was generated mostly by AI */
 import { useEffect, useState } from 'react'
 import Footer from './Footer'
@@ -40,6 +45,8 @@ function TagList({ items, compact = false }) {
     )
 }
 
+// Code for the accordion sections in the advanced review page 
+// Each section has a rating, a list of tags, and a summary text area.
 function AccordionSection({ section, isOpen, onToggle }) {
     return (
         <section className="review-form__accordion-section">
@@ -49,7 +56,7 @@ function AccordionSection({ section, isOpen, onToggle }) {
                 aria-expanded={isOpen}
                 onClick={() => onToggle(section.id)}
             >
-                <span>{section.title}</span>
+                <span className="review-form__label">{section.title}</span>
                 <span className={`review-form__chevron${isOpen ? ' review-form__chevron--open' : ''}`} aria-hidden="true">
                     ⌄
                 </span>
@@ -57,17 +64,16 @@ function AccordionSection({ section, isOpen, onToggle }) {
 
             {isOpen ? (
                 <div className="review-form__accordion-panel">
-                    <h3>{section.title}</h3>
-                    <p className="review-form__section-label">{section.ratingPrompt}</p>
+                    <p className="review-form__label">{section.ratingPrompt}</p>
                     <RatingRow />
 
                     <div className="review-form__section-block">
-                        <h4>This venue has...</h4>
+                        <h4 className="review-form__label">This venue has...</h4>
                         <TagList items={section.tags} compact />
                     </div>
 
-                    <div className="review-form__section-block">
-                        <h4>Summarize your experience</h4>
+                    <div className="review-form__section-block review-form__section-block--summary">
+                        <h4 className="review-form__label">Summarize your experience</h4>
                         <p className="review-form__hint">{section.summaryPrompt}</p>
                         <textarea
                             className="review-form__textarea review-form__textarea--large"
@@ -99,6 +105,7 @@ function ReviewForm({ isOpen, onClose }) {
         return null
     }
 
+    // opens and closes the accordion sections 
     const toggleSection = (sectionId) => {
         setOpenSections((current) => ({
             ...current,
