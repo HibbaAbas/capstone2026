@@ -2,8 +2,16 @@
 import { useState } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import filterSectionsText from './data/filter-sections/access-filters.txt?raw'
 //import VenueRequestPopup from "./VenueRequestPopup";
 import "./explore.css";
+
+// for header 
+const navItems = [
+    { label: 'Explore', href: '#' },
+    { label: 'About', href: '#' },
+    { label: 'Request', href: '#' },
+]
 
 const sampleVenues = [
     {
@@ -40,6 +48,7 @@ const sampleVenues = [
     },
 ];
 
+/** 
 const sidebarFilters = [
     {
         heading: "Reviews Tagged",
@@ -62,6 +71,22 @@ const sidebarFilters = [
         items: ["Helpful Staff", "ADA Staff", "Clear Communication"],
     },
 ];
+*/
+
+// filter for parsing the txt file that contains all filter options 
+function parseFilterSection(sectionText) {
+    const [title, ...items] = sectionText
+        .split('\n')
+        .map((line) => line.trim())
+        .filter(Boolean)
+
+    return { title, items }
+}
+const filterSections = filterSectionsText
+    .split(/\n\s*\n/)
+    .map((section) => section.trim())
+    .filter(Boolean)
+    .map(parseFilterSection)
 
 export default function Explore() {
     const [searchInput, setSearchInput] = useState("");
@@ -81,7 +106,7 @@ export default function Explore() {
 
     return (
         <div className="explore-page">
-            <Header />
+            <Header navItems={navItems} />
 
             <main className="explore-content">
                 <p className="back-link">← Back To Home</p>
@@ -120,9 +145,9 @@ export default function Explore() {
 
                 <div className="results-layout">
                     <aside className="filter-sidebar">
-                        {sidebarFilters.map((section) => (
-                            <div key={section.heading} className="filter-group">
-                                <h3>{section.heading}</h3>
+                        {filterSections.map((section) => (
+                            <div key={section.title} className="filter-group">
+                                <h3>{section.title}</h3>
 
                                 <div className="tag-list">
                                     {section.items.map((item) => (
@@ -133,6 +158,7 @@ export default function Explore() {
                                 </div>
                             </div>
                         ))}
+
                     </aside>
 
                     <section className="venue-results">
