@@ -3,6 +3,7 @@ import Footer from './components/Footer'
 import Header from './components/Header'
 import filterSectionsText from './data/filter-sections/access-filters.txt?raw'
 import './filter.css'
+import { useNavigate } from "react-router-dom"
 
 // for header 
 const navItems = [
@@ -26,13 +27,19 @@ const filterSections = filterSectionsText
     .filter(Boolean)
     .map(parseFilterSection)
 
-function FilterPage({ onBack }) {
+function FilterPage() {
+    const navigate = useNavigate()
+
     return (
         <div className="filter-page">
             <Header navItems={navItems} />
 
             <main className="filter-content">
-                <button className="back-link" type="button" onClick={onBack}>
+                <button
+                    className="back-link"
+                    type="button"
+                    onClick={() => navigate("/")}
+                >
                     <span aria-hidden="true">&lt;</span>
                     <span>Back To Search</span>
                 </button>
