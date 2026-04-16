@@ -1,0 +1,353 @@
+/** This code is generated mostly by AI */
+.review-form-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    overflow-y: auto;
+    background: #ffffff;
+}
+
+.review-form-shell {
+    min-height: 100vh;
+    background: #ffffff;
+}
+
+.review-form {
+    padding: 1rem 0 0;
+}
+
+.review-form h1 {
+    margin: 0 0 3rem;
+    text-align: center;
+}
+
+.review-form__progress {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 3rem;
+    width: min(1050px, 100%);
+    margin: 0 auto 1.4rem;
+}
+
+.review-form__progress-step {
+    display: grid;
+    gap: 1rem;
+    justify-items: center;
+}
+
+.review-form__progress-step p {
+    margin: 0;
+    color: #000000;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0;
+    text-align: center;
+}
+
+.review-form__progress-bar {
+    width: min(100%, 500px);
+    height: 0;
+    border-top: 15px solid #b9b9b9;
+    background: transparent;
+}
+
+.review-form__progress-bar--active {
+    border-top-color: #21821c;
+}
+
+.review-form__page--intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(20rem, 0.95fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: start;
+    padding-bottom: 2rem;
+}
+
+.review-form__column {
+    display: grid;
+    gap: 2rem;
+}
+
+.review-form__field-group {
+    display: grid;
+    gap: 0.85rem;
+}
+
+.review-form__label {
+    margin: 0;
+    color: #171717;
+    font-size: 1.7rem;
+    font-weight: 400;
+    font-family: var(--font-sans);
+}
+
+.review-form__hint {
+    margin: 0;
+    color: #3e3e3e;
+    font-size: 0.98rem;
+    line-height: 1.4;
+}
+
+.review-form__date-grid {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.review-form__input,
+.review-form__textarea {
+    width: 100%;
+    border: 3px solid #4543C6;
+    border-radius: 25px;
+    background: #ffffff;
+    color: #171717;
+    padding: 20px;
+    gap: 10px;
+}
+
+.review-form__input {
+    width: 5rem;
+    min-height: 3rem;
+    padding: 0.8rem 0.9rem;
+}
+
+.review-form__textarea {
+    min-height: 7.5rem;
+    padding: 1rem 1.1rem;
+    font-family: var(--font-sans);
+    font-size: 0.3rem;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0;
+    vertical-align: bottom;
+    resize: vertical;
+}
+
+.review-form__textarea::placeholder {
+    color: #b7b7b7;
+    font-family: var(--font-sans);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0;
+}
+
+.review-form__textarea--large {
+    min-height: 9.5rem;
+}
+
+.review-form__rating-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem 1rem;
+}
+
+.review-form__rating-item {
+    display: grid;
+    justify-items: center;
+    gap: 0.3rem;
+    min-width: 2.85rem;
+    color: #202020;
+    font-size: 0.92rem;
+}
+
+.review-form__star {
+    color: #bcbcbc;
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.review-form__upload-box {
+    display: grid;
+    place-items: center;
+    gap: 0.75rem;
+    min-height: 9.6rem;
+    border: 2px solid #27883d;
+    border-radius: 1rem;
+    color: #27883d;
+    text-align: center;
+}
+
+.review-form__upload-icon {
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.review-form__tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+}
+
+.review-form__tag-list--compact {
+    max-width: 42rem;
+}
+
+.review-form__tag {
+    gap: 0.5rem;
+    color: #232323;
+}
+
+.review-form__actions {
+    display: flex;
+}
+
+.review-form__actions--right {
+    justify-content: flex-start;
+    padding-top: 1rem;
+}
+
+.review-form__actions--split {
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 3rem 0 0;
+}
+
+.review-form__actions--split .review-form__button {
+    width: min(100%, 40rem);
+    min-width: 0;
+    min-height: 4.1rem;
+}
+
+.review-form__button {
+    min-width: 18rem;
+    padding: 0.9rem 1.4rem;
+    border: 2px solid #27883d;
+    font-weight: 700;
+}
+
+.review-form__button--primary {
+    background: #27883d;
+    color: #ffffff;
+}
+
+.review-form__button--ghost {
+    background: #ffffff;
+    color: #27883d;
+}
+
+.review-form__button--next {
+    width: 502px;
+    min-width: 0;
+    min-height: 50px;
+    padding: 15px 200px;
+    border: 3px solid #21821c;
+    border-radius: 50px;
+    gap: 10px;
+    color: #21821c;
+}
+
+.review-form__page--advanced {
+    padding-bottom: 2rem;
+}
+
+.review-form__accordion-list {
+    border-top: 1px solid rgba(28, 28, 28, 0.35);
+}
+
+.review-form__accordion-section {
+    border-bottom: 1px solid rgba(28, 28, 28, 0.35);
+}
+
+.review-form__accordion-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 1.2rem 0;
+    border: 0;
+    background: transparent;
+    color: #111111;
+    text-align: left;
+}
+
+.review-form__accordion-toggle .review-form__label {
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 1;
+}
+
+.review-form__chevron {
+    font-size: 2.2rem;
+    line-height: 1;
+    transform: rotate(0deg);
+    transition: transform 160ms ease;
+}
+
+.review-form__chevron--open {
+    transform: rotate(180deg);
+}
+
+.review-form__accordion-panel {
+    padding: 0 0 1.35rem;
+}
+
+.review-form__accordion-panel .review-form__label {
+    margin: 1.2rem 0 1rem;
+}
+
+.review-form__section-block {
+    display: grid;
+    gap: 0.8rem;
+    margin-top: 1.35rem;
+}
+
+.review-form__section-block--summary {
+    gap: 0.45rem;
+}
+
+.review-form__section-block--summary .review-form__label {
+    margin: 0 0 0.2rem;
+}
+
+.review-form__section-block--summary .review-form__hint {
+    margin-bottom: 0.75rem;
+}
+
+@media (max-width: 960px) {
+    .review-form__page--intro {
+        grid-template-columns: 1fr;
+    }
+
+    .review-form__actions--split {
+        flex-direction: column;
+    }
+
+    .review-form__button {
+        width: 100%;
+        min-width: 0;
+    }
+}
+
+@media (max-width: 720px) {
+    .review-form {
+        padding-top: 0.8rem;
+    }
+
+    .review-form h1 {
+        margin-bottom: 2rem;
+    }
+
+    .review-form__progress {
+        gap: 0.75rem;
+    }
+
+    .review-form__progress-step p {
+        font-size: 0.82rem;
+    }
+
+    .review-form__accordion-toggle {
+        font-size: 1.55rem;
+    }
+
+    .review-form__accordion-panel h3 {
+        font-size: 1.55rem;
+    }
+
+    .review-form__tag {
+        width: 100%;
+        justify-content: space-between;
+    }
+}

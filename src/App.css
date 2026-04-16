@@ -7,15 +7,25 @@
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
+  gap: 1rem;
 }
 
-.test-filter-button {
+.test-filter-button,
+.test-review-button {
   border: 0;
   border-radius: 999px;
   padding: 0.8rem 1.2rem;
-  background: #27883d;
   color: #ffffff;
   font-size: 1rem;
   font-weight: 700;
+}
+
+.test-filter-button {
+  background: #27883d;
   box-shadow: 0 10px 24px rgba(39, 136, 61, 0.18);
+}
+
+.test-review-button {
+  background: #13221a;
+  box-shadow: 0 10px 24px rgba(19, 34, 26, 0.18);
 }
