@@ -1,0 +1,223 @@
+* {
+    box-sizing: border-box;
+}
+
+.explore-page {
+    min-height: 100vh;
+    background-color: #f7f7f7;
+    color: #111;
+}
+
+.explore-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 24px 60px 24px;
+}
+
+.back-link {
+    font-size: 14px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.search-sort-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+/* AI-assisted starter styling for the main search bar layout */
+.search-bar {
+    flex: 1;
+    padding: 14px 18px;
+    border: 1px solid #d3d3d3;
+    border-radius: 999px;
+    font-size: 14px;
+    background-color: white;
+    outline: none;
+}
+
+.search-bar:focus {
+    border-color: #999;
+}
+
+.sort-dropdown {
+    padding: 12px 14px;
+    border: 1px solid #d3d3d3;
+    border-radius: 12px;
+    background-color: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.request-button {
+    padding: 12px 16px;
+    border: none;
+    border-radius: 12px;
+    background-color: #2f80ff;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.request-button:hover {
+    background-color: #1f6fe6;
+}
+
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.results-header h1 {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.results-header p {
+    margin: 0;
+    font-size: 14px;
+    color: #444;
+}
+
+/* AI-assisted starter structure for sidebar + results column */
+.results-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 24px;
+}
+
+.filter-sidebar {
+    background-color: white;
+    border: 1px solid #dddddd;
+    border-radius: 12px;
+    padding: 16px;
+    height: fit-content;
+}
+
+.filter-group {
+    margin-bottom: 20px;
+}
+
+.filter-group:last-child {
+    margin-bottom: 0;
+}
+
+.filter-group h3 {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tag-button {
+    border: none;
+    border-radius: 8px;
+    padding: 7px 10px;
+    background-color: #ecebfa;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.tag-button:hover {
+    background-color: #dfddf7;
+}
+
+.venue-results {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.venue-card {
+    display: flex;
+    gap: 18px;
+    padding: 16px;
+    background-color: white;
+    border: 1px solid #dddddd;
+    border-radius: 16px;
+}
+
+.venue-image {
+    width: 180px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 16px;
+}
+
+.venue-info {
+    flex: 1;
+}
+
+.venue-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+}
+
+.venue-top-row h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.venue-rating {
+    font-size: 15px;
+    color: #222;
+}
+
+.venue-address {
+    margin: 0 0 14px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.overview-button {
+    border: none;
+    background: none;
+    padding: 0;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    color: #111;
+}
+
+.overview-button:hover {
+    color: #2f80ff;
+}
+
+@media (max-width: 900px) {
+    .search-sort-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .results-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .results-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .venue-card {
+        flex-direction: column;
+    }
+
+    .venue-image {
+        width: 100%;
+        height: 220px;
+    }
+}
