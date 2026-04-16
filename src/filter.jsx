@@ -28,10 +28,10 @@ const filterSections = filterSectionsText
 
 function FilterPage({ onBack }) {
     return (
-        <div className="filter-page">
+        <div className="filter-page ui-page">
             <Header navItems={navItems} />
 
-            <main className="filter-content">
+            <main className="filter-content ui-container">
                 <button className="back-link" type="button" onClick={onBack}>
                     <span aria-hidden="true">&lt;</span>
                     <span>Back To Search</span>
@@ -40,7 +40,7 @@ function FilterPage({ onBack }) {
                 <div className="filter-page__top-row">
                     <h1>Filter by Access Needs</h1>
 
-                    <button className="ghost-action" type="button">
+                    <button className="ghost-action ui-pill-button ui-pill-button--ghost" type="button">
                         Clear All
                     </button>
                 </div>
@@ -54,7 +54,7 @@ function FilterPage({ onBack }) {
 
                             <div className="filter-chip-grid">
                                 {section.items.map((item) => (
-                                    <button className="filter-chip" key={item} type="button">
+                                    <button className="filter-chip ui-chip" key={item} type="button">
                                         <span>{item}</span>
                                         <span aria-hidden="true">+</span>
                                     </button>
@@ -65,7 +65,7 @@ function FilterPage({ onBack }) {
                 </section>
 
                 <div className="filter-page__bottom-row">
-                    <button className="primary-action" type="button">
+                    <button className="primary-action ui-pill-button ui-pill-button--primary" type="button">
                         Request New Access Filter
                     </button>
                 </div>

@@ -13,19 +13,11 @@
 }
 
 .review-form {
-    width: min(1280px, calc(100% - 3rem));
-    margin: 0 auto;
     padding: 1rem 0 0;
 }
 
 .review-form h1 {
     margin: 0 0 3rem;
-    color: #000000;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: 40px;
-    font-weight: 500;
-    line-height: 1;
-    letter-spacing: 0;
     text-align: center;
 }
 
@@ -88,7 +80,7 @@
     color: #171717;
     font-size: 1.7rem;
     font-weight: 400;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: var(--font-sans);
 }
 
 .review-form__hint {
@@ -124,7 +116,7 @@
 .review-form__textarea {
     min-height: 7.5rem;
     padding: 1rem 1.1rem;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: var(--font-sans);
     font-size: 0.3rem;
     font-weight: 400;
     line-height: 1;
@@ -135,7 +127,7 @@
 
 .review-form__textarea::placeholder {
     color: #b7b7b7;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: var(--font-sans);
     font-size: 20px;
     font-weight: 400;
     line-height: 1;
@@ -194,16 +186,8 @@
 }
 
 .review-form__tag {
-    display: inline-flex;
-    align-items: center;
     gap: 0.5rem;
-    padding: 0.42rem 0.65rem;
-    border: 1px solid rgba(39, 47, 93, 0.1);
-    border-radius: 0.5rem;
-    background: #eef0ff;
     color: #232323;
-    font-size: 0.95rem;
-    box-shadow: 0 1px 3px rgba(25, 33, 72, 0.12);
 }
 
 .review-form__actions {
@@ -231,7 +215,6 @@
     min-width: 18rem;
     padding: 0.9rem 1.4rem;
     border: 2px solid #27883d;
-    border-radius: 999px;
     font-weight: 700;
 }
 
@@ -324,10 +307,6 @@
 }
 
 @media (max-width: 960px) {
-    .review-form {
-        width: min(100%, calc(100% - 2rem));
-    }
-
     .review-form__page--intro {
         grid-template-columns: 1fr;
     }
@@ -344,7 +323,6 @@
 
 @media (max-width: 720px) {
     .review-form {
-        width: min(100%, calc(100% - 1rem));
         padding-top: 0.8rem;
     }
 

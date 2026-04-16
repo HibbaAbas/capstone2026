@@ -36,7 +36,7 @@ function TagList({ items, compact = false }) {
     return (
         <div className={`review-form__tag-list${compact ? ' review-form__tag-list--compact' : ''}`}>
             {items.map((item) => (
-                <button className="review-form__tag" key={item} type="button">
+                <button className="review-form__tag ui-chip" key={item} type="button">
                     <span>{item}</span>
                     <span aria-hidden="true">+</span>
                 </button>
@@ -118,7 +118,7 @@ function ReviewForm({ isOpen, onClose }) {
             <div className="review-form-shell">
                 <Header navItems={navItems} />
 
-                <main className="review-form">
+                <main className="review-form ui-container--wide">
                     <div className="review-form__progress" aria-label="Review progress">
                         <div className="review-form__progress-step">
                             <div className="review-form__progress-bar review-form__progress-bar--active" />
@@ -133,7 +133,7 @@ function ReviewForm({ isOpen, onClose }) {
                         </div>
                     </div>
 
-                    <h1>Write A Review</h1>
+                    <h1 className="ui-heading-page">Write A Review</h1>
 
                     {currentStep === 1 ? (
                         <section className="review-form__page review-form__page--intro">
@@ -185,7 +185,7 @@ function ReviewForm({ isOpen, onClose }) {
                                 </div>
 
                                 <div className="review-form__actions review-form__actions--right">
-                                    <button className="review-form__button review-form__button--ghost review-form__button--next" type="button" onClick={() => setCurrentStep(2)}>
+                                    <button className="review-form__button review-form__button--ghost review-form__button--next ui-pill-button ui-pill-button--ghost" type="button" onClick={() => setCurrentStep(2)}>
                                         Next Page
                                     </button>
                                 </div>
@@ -205,10 +205,10 @@ function ReviewForm({ isOpen, onClose }) {
                             </div>
 
                             <div className="review-form__actions review-form__actions--split">
-                                <button className="review-form__button review-form__button--ghost" type="button" onClick={() => setCurrentStep(1)}>
+                                <button className="review-form__button review-form__button--ghost ui-pill-button ui-pill-button--ghost" type="button" onClick={() => setCurrentStep(1)}>
                                     Previous Page
                                 </button>
-                                <button className="review-form__button review-form__button--primary" type="button" onClick={onClose}>
+                                <button className="review-form__button review-form__button--primary ui-pill-button ui-pill-button--primary" type="button" onClick={onClose}>
                                     Submit All
                                 </button>
                             </div>

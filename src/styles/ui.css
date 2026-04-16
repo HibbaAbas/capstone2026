@@ -1,0 +1,109 @@
+/** This file contains the base styles for the UI components used across 
+the site, such as buttons, chips, and layout containers.
+*/
+
+/** This code is generated mostly by AI */
+
+:root {
+    --font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --color-page-bg: #ffffff;
+    --color-text: #13221a;
+    --color-black: #000000;
+    --color-green: #21821c;
+    --color-green-bright: #27883d;
+    --color-green-alt: #238f2c;
+    --color-chip-bg: #eef0ff;
+    --color-chip-text: #232323;
+    --radius-pill: 999px;
+    --radius-input: 25px;
+    --container-content: 1180px;
+    --container-wide: 1280px;
+    --shadow-chip: 0 1px 3px rgba(25, 33, 72, 0.12);
+}
+
+.ui-page {
+    min-height: 100vh;
+    background: var(--color-page-bg);
+    color: var(--color-text);
+}
+
+.ui-container {
+    width: min(var(--container-content), calc(100% - 2rem));
+    margin: 0 auto;
+}
+
+.ui-container--wide {
+    width: min(var(--container-wide), calc(100% - 3rem));
+    margin: 0 auto;
+}
+
+/** bolder heading, see "Write a Review" page title in review page */
+.ui-heading-page {
+    margin: 0;
+    color: var(--color-black);
+    font-family: var(--font-sans);
+    font-size: 40px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0;
+}
+
+/** Labels for section headers, see "Date of Visit*" in the review form */
+.ui-label {
+    margin: 0;
+    color: #171717;
+    font-family: var(--font-sans);
+    font-size: 1.7rem;
+    font-weight: 400;
+    line-height: 1.1;
+}
+
+/** next, previous buttons, etc */
+.ui-pill-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans);
+    font-weight: 700;
+}
+
+.ui-pill-button--ghost {
+    background: #ffffff;
+    color: var(--color-green-bright);
+}
+
+.ui-pill-button--primary {
+    background: var(--color-green-alt);
+    color: #ffffff;
+}
+
+/** the tags, see in filter page and advanced review form */
+.ui-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.42rem 0.65rem;
+    border: 1px solid rgba(39, 47, 93, 0.1);
+    border-radius: 0.5rem;
+    background: var(--color-chip-bg);
+    color: var(--color-chip-text);
+    font-size: 0.95rem;
+    box-shadow: var(--shadow-chip);
+}
+
+@media (max-width: 960px) {
+    .ui-container--wide {
+        width: min(100%, calc(100% - 2rem));
+    }
+}
+
+@media (max-width: 720px) {
+    .ui-container {
+        width: min(100%, calc(100% - 1rem));
+    }
+
+    .ui-container--wide {
+        width: min(100%, calc(100% - 1rem));
+    }
+}
