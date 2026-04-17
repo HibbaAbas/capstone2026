@@ -7,12 +7,16 @@ import { useState } from 'react'
 import FilterPage from './filter'
 import ReviewForm from './components/ReviewForm'
 import ExplorePage from './explore'
+import HomePage from './home'
+import VenuePage from './venue'
 import './App.css'
 
 function App() {
   const [isFilterPageOpen, setIsFilterPageOpen] = useState(false)
   const [isExplorePageOpen, setIsExplorePageOpen] = useState(false)
   const [isReviewOpen, setIsReviewOpen] = useState(false)
+  const [isHomePageOpen, setIsHomePageOpen] = useState(false)
+  const [isVenuePageOpen, setIsVenuePageOpen] = useState(false)
 
   if (isFilterPageOpen) {
     return <FilterPage onBack={() => setIsFilterPageOpen(false)} />
@@ -20,6 +24,14 @@ function App() {
 
   if (isExplorePageOpen) {
     return <ExplorePage />
+  }
+
+  if (isHomePageOpen) {
+    return <HomePage />
+  }
+
+  if (isVenuePageOpen) {
+    return <VenuePage onBack={() => setIsVenuePageOpen(false)} />
   }
 
   return (
@@ -47,6 +59,22 @@ function App() {
           onClick={() => setIsReviewOpen(true)}
         >
           Write Review
+        </button>
+
+        <button
+          className="test-review-button"
+          type="button"
+          onClick={() => setIsHomePageOpen(true)}
+        >
+          Home Page
+        </button>
+
+        <button
+          className="test-review-button"
+          type="button"
+          onClick={() => setIsVenuePageOpen(true)}
+        >
+          Venue Page
         </button>
       </header>
 
