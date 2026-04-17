@@ -1,0 +1,174 @@
+.home-page {
+    min-height: 100vh;
+    background: #fff;
+    color: #13221a;
+}
+
+/* HERO */
+.hero {
+    position: relative;
+    background: #fff;
+    padding: 3.5rem 1rem 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+}
+
+.hero::before,
+.hero::after {
+    content: "";
+    position: absolute;
+    top: -12rem;
+    width: 32rem;
+    height: 32rem;
+    border-radius: 999px;
+    filter: blur(14px);
+    pointer-events: none;
+}
+
+.hero::before {
+    left: -10rem;
+    background: radial-gradient(circle, rgba(105,118,255,0.18), transparent 70%);
+}
+
+.hero::after {
+    right: -10rem;
+    background: radial-gradient(circle, rgba(116,194,125,0.16), transparent 70%);
+}
+
+.hero > * {
+    position: relative;
+    z-index: 1;
+}
+
+.hero__heading {
+    margin: 0 0 2rem;
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+/* SEARCH */
+.hero__search-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: min(660px, 100%);
+    margin-bottom: 1.25rem;
+}
+
+.search-bar {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: 46px;
+    padding: 0 1rem;
+    border: 1px solid #E5E6FA;
+    border-radius: 999px;
+}
+
+.search-bar__input {
+    flex: 1;
+    border: none;
+    outline: none;
+}
+
+.search-bar__icon {
+    color: #E5E6FA;
+}
+
+/* BUTTONS */
+.view-all-filters-btn {
+    border: 1px solid #21821C;
+    color: #21821C;
+    background: transparent;
+    padding: 0.6rem 1.15rem;
+    border-radius: 999px;
+    font-weight: 700;
+}
+
+.view-all-filters-btn:hover {
+    background: #E5E6FA;
+}
+
+/* FILTER CHIPS */
+.quick-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+}
+
+.quick-filter-chip {
+    border: none;
+    border-radius: 8px;
+    padding: 7px 10px;
+    background-color: #ecebfa;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.quick-filter-chip:hover {
+    background-color: #dfddf7;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+/* VENUES */
+.popular-venues {
+    padding: 2.5rem 0;
+}
+
+.popular-venues__inner {
+    width: min(1180px, 100% - 2rem);
+    margin: 0 auto;
+}
+
+.popular-venues__title {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.venue-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.4rem;
+}
+
+/* CARD */
+.venue-card__image-wrap {
+    aspect-ratio: 16/9;
+    background: #E5E6FA;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.venue-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.venue-card__body {
+    padding: 0.6rem 0.1rem;
+}
+
+.venue-card__title-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.venue-card__more {
+    border: 1px solid #E5E6FA;
+    padding: 0.35rem 0.8rem;
+    border-radius: 999px;
+    background: #fff;
+}
+
+.venue-card__more:hover {
+    border-color: #21821C;
+    color: #21821C;
+}
