@@ -1,3 +1,4 @@
+// for testing purposes
 import Header from "./components/Header"
 import Footer from "./components/Footer"
 import VenueCard from "./components/VenueCard"
@@ -50,7 +51,7 @@ export default function HomePage() {
 
                     <button
                         className="view-all-filters-btn"
-                        onClick={() => {}}
+                        onClick={() => { }}
                     >
                         View All Filters
                     </button>
@@ -74,7 +75,7 @@ export default function HomePage() {
                             <VenueCard
                                 key={venue.id}
                                 venue={venue}
-                                onClick={() => {}}
+                                onClick={() => { }}
                             />
                         ))}
                     </div>
