@@ -58,16 +58,31 @@ export default function Explore() {
     const navigate = useNavigate()
     const [searchInput, setSearchInput] = useState("");
     const [sortBy, setSortBy] = useState("ratings");
+    const [selectedFilter, setSelectedFilter] = useState("")
+    // AI-assisted: starter logic for matching search text against venue names and helper tags
+    const normalizedSearch = searchInput.trim().toLowerCase()
 
-    // AI-assisted starter logic for search/filtering, then edited into this version
-    let shownVenues = venues.filter((venue) =>
-        venue.name.toLowerCase().includes(searchInput.toLowerCase())
-    );
+    let shownVenues = venues.filter((venue) => {
+        const nameMatches = venue.name.toLowerCase().includes(normalizedSearch)
+
+        const tagMatches = venue.searchTags?.some((tag) =>
+            tag.toLowerCase().includes(normalizedSearch)
+        )
+
+        return normalizedSearch === "" || nameMatches || tagMatches
+    })
+
+    // AI-assisted: combines text search results with the selected accessibility filter
+    if (selectedFilter) {
+        shownVenues = shownVenues.filter((venue) =>
+            venue.accessibilityTags?.includes(selectedFilter)
+        )
+    }
 
     if (sortBy === "name") {
-        shownVenues = [...shownVenues].sort((a, b) => a.name.localeCompare(b.name));
+        shownVenues = [...shownVenues].sort((a, b) => a.name.localeCompare(b.name))
     } else if (sortBy === "ratings") {
-        shownVenues = [...shownVenues].sort((a, b) => b.rating - a.rating);
+        shownVenues = [...shownVenues].sort((a, b) => b.rating - a.rating)
     }
 
     return (
@@ -116,6 +131,7 @@ export default function Explore() {
                 <div className="results-header">
                     <h1>Showing results for “{searchInput || "Search Input"}”</h1>
                     <p>Showing {shownVenues.length} results</p>
+                    {selectedFilter && <p>Active filter: {selectedFilter}</p>}
                 </div>
 
                 <div className="results-layout">
@@ -126,7 +142,16 @@ export default function Explore() {
 
                                 <div className="tag-list">
                                     {section.items.map((item) => (
-                                        <button key={item} className="tag-button">
+                                        <button key={item}
+                                            type="button"
+                                            className={`tag-button ${selectedFilter === item ? "tag-button--active" : ""}`}
+                                            aria-pressed={selectedFilter === item}
+                                            onClick={() =>
+                                                setSelectedFilter((currentFilter) =>
+                                                    currentFilter === item ? "" : item
+                                                )
+                                            }
+                                        >
                                             {item} +
                                         </button>
                                     ))}
