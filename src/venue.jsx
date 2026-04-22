@@ -1,10 +1,13 @@
 import { MapPin, Star, UserCircle } from 'lucide-react'
+import { useNavigate, useParams } from 'react-router-dom'
+import ReviewForm from './components/ReviewForm'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import { getVenueById } from './data/venues'
 import './venue.css'
 
 const navItems = [
-    { label: 'Explore', href: '#' },
+    { label: 'Explore', href: '/explore' },
     { label: 'About', href: '#' },
     { label: 'Request', href: '#' },
 ]
@@ -81,7 +84,14 @@ function UserAvatar() {
     )
 }
 
-export default function VenuePage({ onBack }) {
+export default function VenuePage({ isReviewOpen = false }) {
+    const navigate = useNavigate()
+    const { venueId } = useParams()
+    const venue = getVenueById(venueId)
+
+    if (!venue) {
+        return null
+    }
 
     return (
         <div className="venue-page">
@@ -89,25 +99,25 @@ export default function VenuePage({ onBack }) {
 
             <main className="venue-content">
 
-                <button className="back-link" onClick={onBack}>
+                <button className="back-link" type="button" onClick={() => navigate('/explore')}>
                     ← Back To Search Results
                 </button>
 
                 <div className="venue-top">
                     <div className="venue-top__image-wrap">
                         <img
-                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Paramount_Theatre_Seattle.jpg/640px-Paramount_Theatre_Seattle.jpg"
-                            alt="Venue"
+                            src={venue.image}
+                            alt={venue.name}
                             className="venue-top__image"
                         />
                     </div>
 
                     <div className="venue-top__info">
-                        <h1 className="venue-top__name">Venue Name</h1>
+                        <h1 className="venue-top__name">{venue.name}</h1>
 
                         <div className="venue-top__rating-row">
                             <Star size={16} stroke="#4543C6" fill="#4543C6" />
-                            <span className="venue-top__score">3.6</span>
+                            <span className="venue-top__score">{venue.rating}</span>
                             <span className="venue-top__review-count">
                                 (25 Reviews)
                             </span>
@@ -115,7 +125,7 @@ export default function VenuePage({ onBack }) {
 
                         <div className="venue-top__address-row">
                             <MapPin size={14} />
-                            <span>Address</span>
+                            <span>{venue.address}</span>
                         </div>
 
                         <div className="venue-top__actions">
@@ -125,7 +135,8 @@ export default function VenuePage({ onBack }) {
 
                             <button
                                 className="btn-solid"
-                                onClick={() => {}}
+                                type="button"
+                                onClick={() => navigate(`/venues/${venue.id}/review`)}
                             >
                                 Write A Review
                             </button>
@@ -209,6 +220,11 @@ export default function VenuePage({ onBack }) {
             </main>
 
             <Footer />
+
+            <ReviewForm
+                isOpen={isReviewOpen}
+                onClose={() => navigate(`/venues/${venue.id}`)}
+            />
         </div>
     )
 }

@@ -1,9 +1,14 @@
 import { MapPin, Star } from "lucide-react"
 import "./VenueCard.css"
 
-export default function VenueCard({ venue }) {
+export default function VenueCard({ venue, onClick }) {
     return (
-        <article className="home-venue-card">
+        <article className="home-venue-card" onClick={onClick} role="button" tabIndex={0} onKeyDown={(event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault()
+                onClick?.()
+            }
+        }}>
             <div className="home-venue-card__image-wrap">
                 <img
                     src={venue.image}
@@ -30,7 +35,10 @@ export default function VenueCard({ venue }) {
                     <button
                         className="home-venue-card__more"
                         type="button"
-                        onClick={() => {}}
+                        onClick={(event) => {
+                            event.stopPropagation()
+                            onClick?.()
+                        }}
                     >
                         More →
                     </button>
