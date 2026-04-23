@@ -117,9 +117,9 @@
     min-height: 7.5rem;
     padding: 1rem 1.1rem;
     font-family: var(--font-sans);
-    font-size: 0.3rem;
+    font-size: 1rem;
     font-weight: 400;
-    line-height: 1;
+    line-height: 1.45;
     letter-spacing: 0;
     vertical-align: bottom;
     resize: vertical;
@@ -151,6 +151,21 @@
     min-width: 2.85rem;
     color: #202020;
     font-size: 0.92rem;
+}
+
+.review-form__rating-button {
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+}
+
+.review-form__rating-button .review-form__star {
+    color: #bcbcbc;
+}
+
+.review-form__rating-button--active .review-form__star {
+    color: #4543c6;
 }
 
 .review-form__star {
@@ -188,6 +203,19 @@
 .review-form__tag {
     gap: 0.5rem;
     color: #232323;
+}
+
+.review-form__tag--active {
+    border-color: #4543c6;
+    background: #e5e6fa;
+    color: #1e1e3f;
+}
+
+.review-form__error {
+    margin: 0;
+    color: #b21d3a;
+    font-size: 0.9rem;
+    font-weight: 600;
 }
 
 .review-form__actions {

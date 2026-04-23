@@ -161,9 +161,8 @@ export default function VenuePage({ isReviewOpen = false }) {
                                 {cat.items.map((item) => (
                                     <li
                                         key={item.label}
-                                        className={`access-item access-item--${
-                                            item.available ? 'yes' : 'no'
-                                        }`}
+                                        className={`access-item access-item--${item.available ? 'yes' : 'no'
+                                            }`}
                                     >
                                         <span className="access-item__icon">
                                             {item.available ? '✓' : '✕'}
