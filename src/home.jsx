@@ -3,10 +3,12 @@ import Header from "./components/Header"
 import Footer from "./components/Footer"
 import VenueCard from "./components/VenueCard"
 import { Search } from "lucide-react"
+import { useNavigate } from 'react-router-dom'
+import { venues } from './data/venues'
 import "./home.css"
 
 const navItems = [
-    { label: "Explore", href: "#" },
+    { label: "Explore", href: "/explore" },
     { label: "About", href: "#" },
     { label: "Request", href: "#" },
 ]
@@ -19,16 +21,8 @@ const filters = [
     "Sensory Room",
 ]
 
-const venues = [
-    { id: 1, name: "Paramount Theatre", address: "911 Pine St, Seattle, WA", rating: 4.2, image: "https://img.com" },
-    { id: 2, name: "T-Mobile Park", address: "911 Pine St, Seattle, WA", rating: 4.2, image: "https://img.com" },
-    { id: 3, name: "Lumen Field", address: "911 Pine St, Seattle, WA", rating: 4.2, image: "https://img.com" },
-    { id: 4, name: "WaMu Theater", address: "911 Pine St, Seattle, WA", rating: 4.2, image: "https://img.com" },
-    { id: 5, name: "The Showbox", address: "911 Pine St, Seattle, WA", rating: 4.2, image: "https://img.com" },
-    { id: 6, name: "The Crocodile", address: "911 Pine St, Seattle, WA", rating: 4.2, image: "https://img.com" },
-]
-
 export default function HomePage() {
+    const navigate = useNavigate()
 
     return (
         <div className="home-page">
@@ -51,7 +45,8 @@ export default function HomePage() {
 
                     <button
                         className="view-all-filters-btn"
-                        onClick={() => { }}
+                        type="button"
+                        onClick={() => navigate('/explore/filter')}
                     >
                         View All Filters
                     </button>
@@ -75,7 +70,7 @@ export default function HomePage() {
                             <VenueCard
                                 key={venue.id}
                                 venue={venue}
-                                onClick={() => { }}
+                                onClick={() => navigate(`/venues/${venue.id}`)}
                             />
                         ))}
                     </div>
