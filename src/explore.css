@@ -147,6 +147,15 @@
     background-color: #dfddf7;
 }
 
+.tag-button--active {
+    background-color: green;
+    color: white;
+}
+
+.tag-button--active:hover {
+    background-color: #4caf50;
+}
+
 .venue-results {
     display: flex;
     flex-direction: column;

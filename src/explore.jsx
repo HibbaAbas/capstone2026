@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import filterSectionsText from './data/filter-sections/access-filters.txt?raw'
 import { venues } from './data/venues'
+import { getFilters, saveFilters } from "./utils/filterStorage"
 import "./explore.css";
 
 // for header 
@@ -56,12 +57,22 @@ const filterSections = filterSectionsText
 
 export default function Explore() {
     const navigate = useNavigate()
-    const [searchParams, setSearchParams] = useSearchParams()
+    const [searchParams] = useSearchParams()
     const [searchInput, setSearchInput] = useState(searchParams.get("q") || "")
     const [sortBy, setSortBy] = useState("ratings");
-    const [selectedFilter, setSelectedFilter] = useState("")
     // AI-assisted: starter logic for matching search text against venue names and helper tags
     const normalizedSearch = searchInput.trim().toLowerCase()
+    const [selectedFilters, setSelectedFilters] = useState(getFilters)
+
+    const toggleFilter = (item) => {
+        setSelectedFilters((prev) => {
+            const updated = prev.includes(item)
+                ? prev.filter((f) => f !== item)
+                : [...prev, item]
+            saveFilters(updated)
+            return updated
+        })
+    }
 
     let shownVenues = venues.filter((venue) => {
         const nameMatches = venue.name.toLowerCase().includes(normalizedSearch)
@@ -74,9 +85,9 @@ export default function Explore() {
     })
 
     // AI-assisted: combines text search results with the selected accessibility filter
-    if (selectedFilter) {
+    if (selectedFilters.length > 0) {
         shownVenues = shownVenues.filter((venue) =>
-            venue.accessibilityTags?.includes(selectedFilter)
+            selectedFilters.every((f) => venue.accessibilityTags?.includes(f))
         )
     }
 
@@ -130,9 +141,9 @@ export default function Explore() {
                 </div>
 
                 <div className="results-header">
-                    <h1>Showing results for “{searchInput || "Search Input"}”</h1>
+                    <h1>Showing results for "{searchInput || "Search Input"}"</h1>
                     <p>Showing {shownVenues.length} results</p>
-                    {selectedFilter && <p>Active filter: {selectedFilter}</p>}
+                    {selectedFilters.length > 0 && <p>Active filters: {selectedFilters.join(", ")}</p>}
                 </div>
 
                 <div className="results-layout">
@@ -143,17 +154,14 @@ export default function Explore() {
 
                                 <div className="tag-list">
                                     {section.items.map((item) => (
-                                        <button key={item}
+                                        <button
+                                            key={item}
                                             type="button"
-                                            className={`tag-button ${selectedFilter === item ? "tag-button--active" : ""}`}
-                                            aria-pressed={selectedFilter === item}
-                                            onClick={() =>
-                                                setSelectedFilter((currentFilter) =>
-                                                    currentFilter === item ? "" : item
-                                                )
-                                            }
+                                            className={`tag-button ${selectedFilters.includes(item) ? "tag-button--active" : ""}`}
+                                            aria-pressed={selectedFilters.includes(item)}
+                                            onClick={() => toggleFilter(item)}
                                         >
-                                            {item} +
+                                            {item} {selectedFilters.includes(item) ? "✓" : "+"}
                                         </button>
                                     ))}
                                 </div>

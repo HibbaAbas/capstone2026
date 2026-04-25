@@ -172,3 +172,16 @@
     border-color: #21821C;
     color: #21821C;
 }
+
+.quick-filter-chip:hover {
+    background-color: #dfddf7;
+}
+
+.quick-filter-chip--active {
+    background-color: green;
+    color: white;
+}
+
+.quick-filter-chip--active:hover {
+    background-color: #4caf50;
+}

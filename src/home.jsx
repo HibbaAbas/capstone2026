@@ -6,7 +6,9 @@ import { Search } from "lucide-react"
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useState } from "react"
 import { venues } from './data/venues'
+import { getFilters, saveFilters } from "./utils/filterStorage"
 import "./home.css"
+import filterSectionsText from './data/filter-sections/access-filters.txt?raw'
 
 const navItems = [
     { label: "Explore", href: "/explore" },
@@ -14,18 +16,32 @@ const navItems = [
     { label: "Request", href: "#" },
 ]
 
-const filters = [
-    "Elevator",
-    "Wheelchair",
-    "ADA Staff",
-    "Accessible Bathroom",
-    "Sensory Room",
-]
+const filterSections = filterSectionsText
+    .split(/\n\s*\n/)
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .map((s) => {
+        const [, first] = s.split('\n').map((l) => l.trim()).filter(Boolean)
+        return first
+    })
+
+const filters = filterSections.flat().slice(0, 4)
 
 export default function HomePage() {
     const navigate = useNavigate()
     const [searchParams] = useSearchParams()
     const [query, setQuery] = useState("")
+    const [selectedFilters, setSelectedFilters] = useState(getFilters)
+
+    const toggleFilter = (filter) => {
+        setSelectedFilters((prev) => {
+            const updated = prev.includes(filter)
+                ? prev.filter((f) => f !== filter)
+                : [...prev, filter]
+            saveFilters(updated)
+            return updated
+        })
+    }
 
     const handleSearch = () => {
         const params = new URLSearchParams()
@@ -66,8 +82,13 @@ export default function HomePage() {
 
                 <div className="quick-filters">
                     {filters.map((f) => (
-                        <button key={f} className="quick-filter-chip">
-                            {f} +
+                        <button
+                            key={f}
+                            type="button"
+                            className={`quick-filter-chip ${selectedFilters.includes(f) ? "quick-filter-chip--active" : ""}`}
+                            onClick={() => toggleFilter(f)}
+                        >
+                            {f} {selectedFilters.includes(f) ? "✓" : "+"}
                         </button>
                     ))}
                 </div>

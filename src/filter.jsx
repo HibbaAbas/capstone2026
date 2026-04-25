@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import Footer from './components/Footer'
 import Header from './components/Header'
 import filterSectionsText from './data/filter-sections/access-filters.txt?raw'
+import { getFilters, saveFilters, clearFilters } from "./utils/filterStorage"
+import { useState } from 'react'
 import './filter.css'
 
 // for header 
@@ -29,13 +31,29 @@ const filterSections = filterSectionsText
 
 function FilterPage() {
     const navigate = useNavigate()
+    const [selectedFilters, setSelectedFilters] = useState(getFilters)
+
+    const toggleFilter = (item) => {
+        setSelectedFilters((prev) => {
+            const updated = prev.includes(item)
+                ? prev.filter((f) => f !== item)
+                : [...prev, item]
+            saveFilters(updated)
+            return updated
+        })
+    }
+
+    const handleClearAll = () => {
+        clearFilters()
+        setSelectedFilters([])
+    }
 
     return (
         <div className="filter-page ui-page">
             <Header navItems={navItems} />
 
             <main className="filter-content ui-container">
-                <button className="back-link" type="button" onClick={() => navigate('/explore')}>
+                <button className="back-link" type="button" onClick={() => navigate(-1)}>
                     <span aria-hidden="true">&lt;</span>
                     <span>Back To Search</span>
                 </button>
@@ -43,7 +61,7 @@ function FilterPage() {
                 <div className="filter-page__top-row">
                     <h1>Filter by Access Needs</h1>
 
-                    <button className="ghost-action ui-pill-button ui-pill-button--ghost" type="button">
+                    <button className="ghost-action ui-pill-button ui-pill-button--ghost" type="button" onClick={handleClearAll}>
                         Clear All
                     </button>
                 </div>
@@ -57,9 +75,15 @@ function FilterPage() {
 
                             <div className="filter-chip-grid">
                                 {section.items.map((item) => (
-                                    <button className="filter-chip ui-chip" key={item} type="button">
+                                    <button
+                                        className={`filter-chip ui-chip ${selectedFilters.includes(item) ? "ui-chip--active" : ""}`}
+                                        key={item}
+                                        type="button"
+                                        aria-pressed={selectedFilters.includes(item)}
+                                        onClick={() => toggleFilter(item)}
+                                    >
                                         <span>{item}</span>
-                                        <span aria-hidden="true">+</span>
+                                        <span aria-hidden="true">{selectedFilters.includes(item) ? "✓" : "+"}</span>
                                     </button>
                                 ))}
                             </div>

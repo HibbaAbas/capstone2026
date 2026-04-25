@@ -88,6 +88,23 @@
     font-size: 0.95rem;
 }
 
+.ui-chip:hover {
+    background-color: #dfddf7;
+}
+
+.ui-chip--active {
+    background-color: green;
+    color: white;
+}
+
+.ui-chip--active:hover {
+    background-color: #4caf50;
+}
+
+.ui-chip--active span:last-child {
+    color: white;
+}
+
 .filter-page__bottom-row {
     display: flex;
     justify-content: flex-end;
