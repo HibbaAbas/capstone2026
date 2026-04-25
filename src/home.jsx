@@ -3,7 +3,8 @@ import Header from "./components/Header"
 import Footer from "./components/Footer"
 import VenueCard from "./components/VenueCard"
 import { Search } from "lucide-react"
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useState } from "react"
 import { venues } from './data/venues'
 import "./home.css"
 
@@ -23,6 +24,14 @@ const filters = [
 
 export default function HomePage() {
     const navigate = useNavigate()
+    const [searchParams] = useSearchParams()
+    const [query, setQuery] = useState("")
+
+    const handleSearch = () => {
+        const params = new URLSearchParams()
+        if (query.trim()) params.set("q", query.trim())
+        navigate(`/explore?${params.toString()}`)
+    }
 
     return (
         <div className="home-page">
@@ -39,8 +48,11 @@ export default function HomePage() {
                             type="search"
                             placeholder="Search venues and categories..."
                             className="search-bar__input"
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
+                            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                         />
-                        <Search size={18} className="search-bar__icon" />
+                        <Search size={18} className="search-bar__icon" onClick={handleSearch} style={{ cursor: "pointer" }} />
                     </div>
 
                     <button
