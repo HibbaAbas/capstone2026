@@ -102,10 +102,12 @@ export default function Explore() {
             <Header navItems={navItems} />
 
             <main className="explore-content">
-                <button className="back-link" type="button" onClick={() => navigate('/')}>
+                <button className="back-link" type="button" onClick={() => {
+                    saveFilters([])
+                    navigate('/')
+                }}>
                     ← Back To Home
                 </button>
-
                 <div className="search-sort-row">
                     <input
                         type="text"
