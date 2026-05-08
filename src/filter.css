@@ -16,11 +16,18 @@
     align-items: center;
     gap: 0.6rem;
     margin-bottom: 1.6rem;
-    padding: 0;
-    border: 0;
+    padding: 0.6rem 1.2rem;
+    border: 2px solid #21821c;
+    border-radius: 999px;
     background: transparent;
-    color: #21342a;
+    color: #21821c;
     font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.back-link:hover {
+    background: #edfaee;
 }
 
 .filter-page__top-row h1 {
@@ -132,4 +139,27 @@
     .filter-page__bottom-row {
         justify-content: flex-start;
     }
+}
+
+.apply-action {
+    padding: 0.9rem 1.6rem;
+    background: #21821c;
+    color: white;
+    border: none;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-right: 1rem;
+}
+
+.apply-action:hover {
+    background: #1a6b16;
+}
+
+.filter-page__bottom-row {
+    display: flex;
+    align-items: center;
+    padding-top: 2rem;
+    justify-content: flex-start;
 }
