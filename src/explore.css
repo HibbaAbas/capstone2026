@@ -241,4 +241,11 @@
         width: 100%;
         height: 220px;
     }
+
+        
+}
+
+.tag-button--active {
+    background-color: #21821c;
+    color: white;
 }

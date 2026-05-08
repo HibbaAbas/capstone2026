@@ -4,51 +4,63 @@ export const venues = [
         name: 'Paramount Theatre',
         address: '911 Pine St, Seattle, WA',
         rating: 4.2,
-        image:
-            'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Paramount_Theatre_Seattle.jpg/640px-Paramount_Theatre_Seattle.jpg',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Paramount_Theatre_Seattle.jpg/640px-Paramount_Theatre_Seattle.jpg',
+        type: 'theater',
+        accessibilityTags: ['Wheelchair', 'Elevator to All Areas', 'Dedicated ADA Bathrooms', 'ADA Seating', 'Helpful Staff', 'Step-free Entrance'],
+        searchTags: ['theater', 'performing arts', 'music', 'shows'],
     },
     {
         id: 2,
         name: 'T-Mobile Park',
         address: '1250 1st Ave S, Seattle, WA',
         rating: 4.1,
-        image:
-            'https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=1200&auto=format&fit=crop',
+        image: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=1200&auto=format&fit=crop',
+        type: 'stadium',
+        accessibilityTags: ['Dedicated On-Site Parking', 'Dedicated ADA Bathrooms', 'ADA Seating', 'Elevator to All Areas', 'Dedicated ADA Staff', 'Nearby Drop-Off/Pick-Up Point'],
+        searchTags: ['stadium', 'baseball', 'sports', 'mariners'],
     },
     {
         id: 3,
         name: 'Lumen Field',
         address: '800 Occidental Ave S, Seattle, WA',
         rating: 4.3,
-        image:
-            'https://images.unsplash.com/photo-1547347298-4074fc3086f0?q=80&w=1200&auto=format&fit=crop',
+        image: 'https://images.unsplash.com/photo-1547347298-4074fc3086f0?q=80&w=1200&auto=format&fit=crop',
+        type: 'stadium',
+        accessibilityTags: ['Dedicated On-Site Parking', 'ADA Seating', 'Elevator to All Areas', 'Dedicated ADA Bathrooms', 'Nearby Drop-Off/Pick-Up Point', 'Wide Interior Pathways'],
+        searchTags: ['stadium', 'football', 'soccer', 'sports', 'seahawks', 'sounders'],
     },
     {
         id: 4,
         name: 'WaMu Theater',
         address: '800 Occidental Ave S, Seattle, WA',
         rating: 4.0,
-        image:
-            'https://images.unsplash.com/photo-1516280440614-37939bbacd81?q=80&w=1200&auto=format&fit=crop',
+        image: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?q=80&w=1200&auto=format&fit=crop',
+        type: 'theater',
+        accessibilityTags: ['ADA Seating', 'Step-free Entrance', 'Dedicated ADA Bathrooms', 'Assistive Listening Devices', 'Single Level Venue'],
+        searchTags: ['theater', 'concert', 'music', 'events'],
     },
     {
         id: 5,
         name: 'The Showbox',
         address: '1426 1st Ave, Seattle, WA',
         rating: 4.1,
-        image:
-            'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?q=80&w=1200&auto=format&fit=crop',
+        image: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?q=80&w=1200&auto=format&fit=crop',
+        type: 'music venue',
+        accessibilityTags: ['Step-free Entrance', 'Helpful Staff', 'Single Level Venue'],
+        searchTags: ['music', 'concert', 'live music', 'venue'],
     },
     {
         id: 6,
         name: 'The Crocodile',
         address: '2505 1st Ave, Seattle, WA',
         rating: 4.2,
-        image:
-            'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=1200&auto=format&fit=crop',
+        image: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?q=80&w=1200&auto=format&fit=crop',
+        type: 'music venue',
+        accessibilityTags: ['Helpful Staff', 'Clear Communication', 'Single Level Venue'],
+        searchTags: ['music', 'concert', 'live music', 'bar', 'venue'],
     },
 ]
 
 export function getVenueById(venueId) {
     return venues.find((venue) => String(venue.id) === String(venueId))
-}
+} 
