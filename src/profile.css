@@ -1,0 +1,302 @@
+.profile-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-content {
+    flex: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 24px;
+    width: 100%;
+}
+
+/* ── Profile edit ── */
+.profile-edit {
+    display: flex;
+    gap: 48px;
+    margin-bottom: 8px;
+}
+
+.profile-edit__left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    min-width: 160px;
+}
+
+.profile-edit__avatar {
+    width: 140px;
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-edit__avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-edit__avatar-fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 4px;
+}
+
+.profile-edit__photo-btn {
+    background: none;
+    border: none;
+    color: #21821C;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0;
+}
+
+.profile-edit__pencil {
+    font-size: 13px;
+}
+
+.profile-edit__right {
+    flex: 1;
+}
+
+.profile-edit__section-title {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0 0 18px;
+    color: #222;
+}
+
+.profile-edit__section-title--tags {
+    margin-top: 32px;
+}
+
+.profile-edit__field {
+    margin-bottom: 16px;
+}
+
+.profile-edit__label {
+    display: block;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 6px;
+}
+
+.profile-edit__input {
+    width: 100%;
+    max-width: 380px;
+    padding: 10px 16px;
+    border: 1.5px solid #a0a3c0;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    color: #333;
+    background: #fafafa;
+}
+
+.profile-edit__input:focus {
+    border-color: #4543C6;
+    background: #fff;
+}
+
+.profile-edit__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.profile-edit__tag {
+    background: #fff;
+    border: 1.5px solid #c8cadf;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 13px;
+    color: #444;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.profile-edit__tag--active {
+    background: #eeedfe;
+    border-color: #4543C6;
+    color: #3c3489;
+}
+
+.profile-edit__save-row {
+    display: flex;
+    justify-content: center;
+    margin: 28px 0 48px;
+}
+
+.profile-edit__save-btn {
+    padding: 0.6rem 2rem;
+    font-size: 0.95rem;
+}
+
+.profile-edit__error {
+    color: #d32f2f;
+    font-size: 14px;
+    text-align: center;
+    margin: 8px 0 0;
+}
+
+.profile-edit__success {
+    color: #2e7d32;
+    font-size: 14px;
+    text-align: center;
+    margin: 8px 0 0;
+}
+
+/* ── Profile avatar shared ── */
+.profile-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* ── View mode ── */
+.profile-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 0 40px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #e5e6fa;
+}
+
+.profile-view__avatar {
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.profile-view__name {
+    font-size: 22px;
+    font-weight: 600;
+    margin: 0 0 4px;
+    color: #111;
+}
+
+.profile-view__email {
+    font-size: 14px;
+    color: #888;
+    margin: 0 0 16px;
+}
+
+.profile-view__tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.profile-view__tag {
+    background: #eeedfe;
+    color: #3c3489;
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 13px;
+}
+
+.profile-view__actions {
+    display: flex;
+    gap: 12px;
+}
+
+/* ── Edit cancel button ── */
+.profile-edit__cancel-btn {
+    margin-right: 4px;
+}
+
+/* ── Sections ── */
+.profile-section {
+    margin-bottom: 48px;
+}
+
+.profile-section__title {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+.profile-section__empty {
+    color: #888;
+    font-size: 14px;
+}
+
+/* ── Review cards ── */
+.profile-reviews {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.profile-review-card {
+    border: 1px solid #e5e6fa;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.profile-review-card__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.profile-review-card__venue {
+    font-weight: 500;
+    color: #4543C6;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.profile-review-card__venue:hover {
+    text-decoration: underline;
+}
+
+.profile-review-card__rating {
+    color: #4543C6;
+    font-weight: 500;
+}
+
+.profile-review-card__summary {
+    font-size: 14px;
+    color: #444;
+    margin: 0 0 12px;
+}
+
+.profile-review-card__footer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.profile-review-card__tag {
+    background: #eeedfe;
+    color: #3c3489;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+}
+
+.profile-review-card__date {
+    font-size: 12px;
+    color: #888;
+    margin: 0;
+}

@@ -1,0 +1,208 @@
+.signin-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.signin-page__content {
+    flex: 1;
+    display: flex;
+    align-items: stretch;
+}
+
+/* ── Left panel ── */
+.signin-page__left {
+    width: 38%;
+    min-width: 320px;
+    display: flex;
+    flex-direction: column;
+    padding: 48px 64px;
+    background: #fff;
+}
+
+.signin-page__logo-link {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    margin-bottom: 40px;
+}
+
+.signin-page__logo {
+    height: 2rem;
+    width: auto;
+}
+
+/* vertically center the form block in the remaining space */
+.signin-page__form-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-bottom: 32px;
+}
+
+.signin-page__heading {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0 0 28px;
+    color: #111;
+}
+
+/* card wrapper around the fields */
+.signin-page__card {
+    border: 1px solid #d8dae8;
+    border-radius: 10px;
+    padding: 28px 24px 24px;
+    margin-bottom: 18px;
+}
+
+.signin-page__form {
+    display: flex;
+    flex-direction: column;
+}
+
+.signin-page__field {
+    margin-bottom: 14px;
+}
+
+.signin-page__field:last-of-type {
+    margin-bottom: 0;
+}
+
+.signin-page__label {
+    display: block;
+    font-size: 13px;
+    color: #444;
+    margin-bottom: 5px;
+}
+
+.signin-page__input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #d0d1e8;
+    border-radius: 7px;
+    font-size: 13.5px;
+    outline: none;
+    color: #333;
+    background: #fff;
+    box-sizing: border-box;
+}
+
+.signin-page__input:focus {
+    border-color: #4543C6;
+}
+
+/* Hide browser-native password reveal button */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+    display: none;
+}
+
+.pw-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.pw-wrap .signin-page__input,
+.pw-wrap .signup-page__input {
+    width: 100%;
+    padding-right: 36px;
+}
+
+.pw-toggle {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #888;
+    display: flex;
+    align-items: center;
+    padding: 0;
+}
+
+.pw-toggle:hover {
+    color: #444;
+}
+
+.signin-page__error {
+    font-size: 12.5px;
+    color: #d32f2f;
+    margin: 8px 0 0;
+}
+
+.signin-page__submit {
+    width: 100%;
+    padding: 9px;
+    background: #111;
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 16px;
+    transition: background 0.2s;
+}
+
+.signin-page__submit:hover:not(:disabled) {
+    background: #333;
+}
+
+.signin-page__submit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.signin-page__forgot {
+    background: none;
+    border: none;
+    font-size: 12.5px;
+    color: #555;
+    cursor: pointer;
+    padding: 0;
+    text-align: left;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.signin-page__forgot:hover {
+    text-decoration: underline;
+}
+
+.signin-page__signup-prompt {
+    font-size: 12.5px;
+    color: #555;
+    margin: 0;
+}
+
+.signin-page__signup-link {
+    color: #111;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.signin-page__signup-link:hover {
+    text-decoration: underline;
+}
+
+/* ── Right panel (image) ── */
+.signin-page__right {
+    flex: 1;
+    background: #c5cde8;
+    background-image: url('/signin-photo.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+@media (max-width: 700px) {
+    .signin-page__right {
+        display: none;
+    }
+
+    .signin-page__left {
+        width: 100%;
+        padding: 32px 24px;
+    }
+}

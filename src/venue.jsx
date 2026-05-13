@@ -1,9 +1,11 @@
 import { MapPin, Star, UserCircle } from 'lucide-react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useState, useEffect, useRef } from 'react'
 import ReviewForm from './components/ReviewForm'
 import Header from './components/Header'
 import Footer from './components/Footer'
-import { getVenueById } from './data/venues'
+import { getVenue, getReviewsForVenue, voteReview } from './db'
+import { auth } from './firebase'
 import './venue.css'
 
 const navItems = [
@@ -51,12 +53,6 @@ const accessCategories = [
     },
 ]
 
-const reviews = [
-    { id: 1, name: 'Mateo', date: 'March 6, 2026', rating: 4, text: 'Overall, I had a pretty pleasant experience at this venue.', tag: 'Wheelchair User' },
-    { id: 2, name: 'Norah', date: 'March 6, 2026', rating: 4, text: 'Overall, I had a pretty pleasant experience at this venue.', tag: 'Blind/Visually Impaired' },
-    { id: 3, name: 'Jordan', date: 'March 6, 2026', rating: 4, text: 'Overall, I had a pretty pleasant experience at this venue.', tag: 'Deaf/Hard of Hearing' },
-    { id: 4, name: 'William', date: 'March 6, 2026', rating: 4, text: 'Overall, I had a pretty pleasant experience at this venue.', tag: 'Communication' },
-]
 
 function StarRating({ rating }) {
     const stars = []
@@ -87,7 +83,49 @@ function UserAvatar() {
 export default function VenuePage({ isReviewOpen = false }) {
     const navigate = useNavigate()
     const { venueId } = useParams()
-    const venue = getVenueById(venueId)
+    const [venue, setVenue] = useState(null)
+    const [reviews, setReviews] = useState([])
+    const reviewsRef = useRef(null)
+
+    const handleVote = async (review, voteType) => {
+        const userId = auth.currentUser?.uid
+        if (!userId) return
+
+        const alreadyUpvoted = review.upvotedBy?.includes(userId)
+        const alreadyDownvoted = review.downvotedBy?.includes(userId)
+
+        // update UI instantly without waiting for Firestore
+        setReviews((current) => current.map((r) => {
+            if (r.id !== review.id) return r
+
+            let upvotedBy = [...(r.upvotedBy ?? [])]
+            let downvotedBy = [...(r.downvotedBy ?? [])]
+
+            if (voteType === 'up') {
+                upvotedBy = alreadyUpvoted ? upvotedBy.filter((id) => id !== userId) : [...upvotedBy, userId]
+                downvotedBy = downvotedBy.filter((id) => id !== userId)
+            } else {
+                downvotedBy = alreadyDownvoted ? downvotedBy.filter((id) => id !== userId) : [...downvotedBy, userId]
+                upvotedBy = upvotedBy.filter((id) => id !== userId)
+            }
+
+            return {
+                ...r,
+                upvotes: upvotedBy.length,
+                downvotes: downvotedBy.length,
+                upvotedBy,
+                downvotedBy,
+            }
+        }))
+
+        // then save to Firestore in the background
+        await voteReview(review.id, userId, voteType)
+    }
+
+    useEffect(() => {
+        getVenue(venueId).then(setVenue)
+        getReviewsForVenue(venueId).then(setReviews)
+    }, [venueId])
 
     if (!venue) {
         return null
@@ -118,9 +156,7 @@ export default function VenuePage({ isReviewOpen = false }) {
                         <div className="venue-top__rating-row">
                             <Star size={16} stroke="#4543C6" fill="#4543C6" />
                             <span className="venue-top__score">{venue.rating}</span>
-                            <span className="venue-top__review-count">
-                                (25 Reviews)
-                            </span>
+                            <span className="venue-top__review-count">({venue.reviewCount ?? 0} Reviews)</span>
                         </div>
 
                         <div className="venue-top__address-row">
@@ -129,7 +165,11 @@ export default function VenuePage({ isReviewOpen = false }) {
                         </div>
 
                         <div className="venue-top__actions">
-                            <button className="btn-outline">
+                            <button
+                                className="btn-outline"
+                                type="button"
+                                onClick={() => reviewsRef.current?.scrollIntoView({ behavior: 'smooth' })}
+                            >
                                 View Reviews
                             </button>
 
@@ -145,7 +185,7 @@ export default function VenuePage({ isReviewOpen = false }) {
                 </div>
 
                 <h2 className="overall-rating">
-                    Overall <Star size={16} stroke="#4543C6" fill="#4543C6" /> 4.2
+                    Overall <Star size={16} stroke="#4543C6" fill="#4543C6" /> {venue.rating ?? 0}
                 </h2>
 
                 <div className="access-card">
@@ -161,9 +201,8 @@ export default function VenuePage({ isReviewOpen = false }) {
                                 {cat.items.map((item) => (
                                     <li
                                         key={item.label}
-                                        className={`access-item access-item--${
-                                            item.available ? 'yes' : 'no'
-                                        }`}
+                                        className={`access-item access-item--${item.available ? 'yes' : 'no'
+                                            }`}
                                     >
                                         <span className="access-item__icon">
                                             {item.available ? '✓' : '✕'}
@@ -176,7 +215,7 @@ export default function VenuePage({ isReviewOpen = false }) {
                     ))}
                 </div>
 
-                <h2 className="reviews-heading">Recent Reviews</h2>
+                <h2 className="reviews-heading" ref={reviewsRef}>Recent Reviews</h2>
 
                 <div className="reviews-grid">
                     {reviews.map((review) => (
@@ -186,31 +225,53 @@ export default function VenuePage({ isReviewOpen = false }) {
                                     <UserAvatar />
                                     <div>
                                         <p className="review-card__name">
-                                            {review.name}
+                                            {review.authorName ?? 'Anonymous'}
                                         </p>
                                         <p className="review-card__date">
-                                            {review.date}
+                                            {review.dateOfVisit?.month}/{review.dateOfVisit?.day}/{review.dateOfVisit?.year}
                                         </p>
                                     </div>
                                 </div>
 
                                 <div className="review-card__rating-wrap">
                                     <span className="review-card__score">
-                                        {review.rating}
+                                        {review.overallRating}
                                     </span>
-                                    <StarRating rating={review.rating} />
+                                    <StarRating rating={review.overallRating} />
                                 </div>
                             </div>
 
                             <p className="review-card__text">
-                                {review.text}
+                                {review.summary}
                             </p>
 
                             <div className="review-card__footer">
                                 <span className="review-card__tag">
-                                    {review.tag}
+                                    {review.accessNeeds?.[0] ?? ''}
                                 </span>
-                                <button className="review-card__read">
+                                <div className="review-card__votes">
+                                    <button
+                                        type="button"
+                                        className={`review-card__vote-btn${review.upvotedBy?.includes(auth.currentUser?.uid) ? ' review-card__vote-btn--active-up' : ''}`}
+                                        onClick={() => handleVote(review, 'up')}
+                                        aria-label="Upvote"
+                                    >
+                                        ▲ <span>{review.upvotes ?? 0}</span>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className={`review-card__vote-btn${review.downvotedBy?.includes(auth.currentUser?.uid) ? ' review-card__vote-btn--active-down' : ''}`}
+                                        onClick={() => handleVote(review, 'down')}
+                                        aria-label="Downvote"
+                                    >
+                                        ▼ <span>{review.downvotes ?? 0}</span>
+                                    </button>
+                                </div>
+                                <button
+                                    className="review-card__read"
+                                    type="button"
+                                    onClick={() => navigate(`/venues/${venueId}/reviews/${review.id}`)}
+                                >
                                     Read Review →
                                 </button>
                             </div>
@@ -224,6 +285,7 @@ export default function VenuePage({ isReviewOpen = false }) {
             <ReviewForm
                 isOpen={isReviewOpen}
                 onClose={() => navigate(`/venues/${venue.id}`)}
+                onSubmitted={() => getReviewsForVenue(venueId).then(setReviews)}
             />
         </div>
     )

@@ -90,10 +90,244 @@
     line-height: 1.4;
 }
 
+.review-form__date-wrap {
+    position: relative;
+}
+
+.review-form__date-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 .review-form__date-grid {
     display: flex;
     gap: 0.6rem;
     flex-wrap: wrap;
+}
+
+.review-form__cal-btn {
+    background: none;
+    border: 1px solid #d0d2e0;
+    border-radius: 8px;
+    padding: 6px 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #555;
+    transition: background 0.15s, color 0.15s;
+    flex-shrink: 0;
+}
+
+.review-form__cal-btn:hover {
+    background: #f0f1f8;
+    color: #4543C6;
+}
+
+/* ── Top bar (progress + close button) ── */
+.review-form__top-bar {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 0;
+}
+
+.review-form__top-bar .review-form__progress {
+    flex: 1;
+}
+
+.review-form__close-btn {
+    background: none;
+    border: 1px solid #d0d2e0;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #666;
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-top: 4px;
+    transition: background 0.15s, color 0.15s;
+}
+
+.review-form__close-btn:hover {
+    background: #fdeeed;
+    border-color: #c62b2b;
+    color: #c62b2b;
+}
+
+/* ── Cancel confirmation page ── */
+.review-form__cancel-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 40vh;
+    text-align: center;
+    gap: 16px;
+}
+
+.review-form__cancel-heading {
+    font-size: 22px;
+    font-weight: 600;
+    color: #111;
+    margin: 0;
+}
+
+.review-form__cancel-body {
+    font-size: 15px;
+    color: #666;
+    margin: 0;
+}
+
+.review-form__cancel-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.review-form__button--danger {
+    background: #c62b2b;
+    color: #fff;
+    border: none;
+    padding: 0.55rem 1.4rem;
+}
+
+.review-form__button--danger:hover {
+    background: #a82222;
+}
+
+.cal-picker-popout {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    z-index: 50;
+}
+
+/* ── Calendar date picker ── */
+.cal-picker {
+    background: #fff;
+    border: 1px solid #e0e2f0;
+    border-radius: 12px;
+    padding: 14px 14px 12px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+    max-width: 260px;
+    user-select: none;
+}
+
+.cal-picker__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.cal-picker__nav {
+    background: none;
+    border: 1px solid #d0d2e0;
+    border-radius: 6px;
+    width: 26px;
+    height: 26px;
+    cursor: pointer;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #444;
+    line-height: 1;
+    padding: 0;
+}
+
+.cal-picker__nav:hover {
+    background: #f0f1f8;
+}
+
+.cal-picker__month-label {
+    font-weight: 600;
+    font-size: 13.5px;
+    color: #111;
+}
+
+.cal-picker__grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    text-align: center;
+}
+
+.cal-picker__day-name {
+    font-size: 10.5px;
+    color: #999;
+    padding: 4px 0 6px;
+    font-weight: 500;
+}
+
+.cal-picker__day {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: none;
+    background: none;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    color: #222;
+    transition: background 0.1s;
+    padding: 0;
+}
+
+.cal-picker__day:hover:not(:disabled) {
+    background: #f0f1f8;
+}
+
+.cal-picker__day--other {
+    color: #ccc;
+    cursor: default;
+    pointer-events: none;
+}
+
+.cal-picker__day--today {
+    border: 1.5px solid #21821C;
+    color: #21821C;
+    font-weight: 600;
+}
+
+.cal-picker__day--selected {
+    background: #21821C !important;
+    color: #fff !important;
+    font-weight: 600;
+}
+
+.cal-picker__shortcuts {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    border-top: 1px solid #eff0f6;
+    padding-top: 10px;
+}
+
+.cal-picker__shortcut {
+    flex: 1;
+    padding: 6px 4px;
+    border: 1px solid #d0d2e0;
+    border-radius: 8px;
+    background: #fff;
+    font-size: 12px;
+    cursor: pointer;
+    color: #333;
+    transition: background 0.15s;
+}
+
+.cal-picker__shortcut:hover {
+    background: #f0f1f8;
 }
 
 .review-form__input,
@@ -229,14 +463,24 @@
 
 .review-form__actions--split {
     justify-content: space-between;
-    gap: 1rem;
-    padding: 3rem 0 0;
+    gap: 12px;
+    padding-top: 1.5rem;
 }
 
 .review-form__actions--split .review-form__button {
-    width: min(100%, 40rem);
+    flex: 1;
     min-width: 0;
-    min-height: 4.1rem;
+    min-height: 0;
+}
+
+.review-form__actions--split .review-form__button--cancel {
+    flex: 0 0 auto;
+    padding-left: 1.2rem;
+    padding-right: 1.2rem;
+}
+
+.review-form__actions--split .review-form__button--next {
+    flex: 1;
 }
 
 .review-form__button {
@@ -256,15 +500,18 @@
     color: #27883d;
 }
 
+.review-form__button--cancel {
+    border-color: #c62b2b;
+    color: #c62b2b;
+    background: #ffffff;
+}
+
+.review-form__button--cancel:hover {
+    background: #fdeeed;
+}
+
 .review-form__button--next {
-    width: 502px;
     min-width: 0;
-    min-height: 50px;
-    padding: 15px 200px;
-    border: 3px solid #21821c;
-    border-radius: 50px;
-    gap: 10px;
-    color: #21821c;
 }
 
 .review-form__page--advanced {

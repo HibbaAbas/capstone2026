@@ -1,15 +1,15 @@
 /** This component is the review form. It consists of two pages, the quick review
  * and the advanced review that the user can toggle between
- * 
- * TODO: quick review is required, make sure user can only toggle to second review 
- * page only when quick review boxes are filled! . 
 */
-/** This code was generated mostly by AI */
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Footer from './Footer'
 import Header from './Header'
 import { advancedReviewSections, reviewAccessNeeds } from '../data/reviewFormData'
 import './ReviewForm.css'
+import { useParams } from 'react-router-dom'
+import { addReview, getProfile } from '../db'
+import { auth } from '../firebase'
+import { Calendar } from 'lucide-react'
 
 const navItems = [
     { label: 'Explore', href: '#' },
@@ -19,6 +19,81 @@ const navItems = [
 
 const ratingLabels = ['Bad', 'Poor', 'Average', 'Good', 'Great']
 const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+const calDayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+
+function CalendarDatePicker({ day, month, year, onDateSelect }) {
+    const today = new Date()
+    const [viewYear, setViewYear] = useState(today.getFullYear())
+    const [viewMonth, setViewMonth] = useState(today.getMonth() + 1)
+
+    const daysInMonth = (y, m) => new Date(y, m, 0).getDate()
+    const firstDayOffset = (y, m) => {
+        const d = new Date(y, m - 1, 1).getDay()
+        return d === 0 ? 6 : d - 1
+    }
+
+    const offset = firstDayOffset(viewYear, viewMonth)
+    const totalDays = daysInMonth(viewYear, viewMonth)
+    const prevDays = daysInMonth(viewYear, viewMonth === 1 ? 12 : viewMonth - 1)
+
+    const cells = []
+    for (let i = 0; i < offset; i++) cells.push({ d: prevDays - offset + 1 + i, curr: false })
+    for (let d = 1; d <= totalDays; d++) cells.push({ d, curr: true })
+    const tail = cells.length % 7 === 0 ? 0 : 7 - (cells.length % 7)
+    for (let i = 1; i <= tail; i++) cells.push({ d: i, curr: false })
+
+    const selD = parseInt(day), selM = parseInt(month), selY = parseInt(year)
+    const todayD = today.getDate(), todayM = today.getMonth() + 1, todayY = today.getFullYear()
+
+    const isSelected = (d) => d === selD && viewMonth === selM && viewYear === selY
+    const isToday = (d) => d === todayD && viewMonth === todayM && viewYear === todayY
+
+    const select = (d) => onDateSelect(String(d), String(viewMonth), String(viewYear))
+
+    const goYesterday = () => {
+        const t = new Date(); t.setDate(t.getDate() - 1)
+        setViewYear(t.getFullYear()); setViewMonth(t.getMonth() + 1)
+        onDateSelect(String(t.getDate()), String(t.getMonth() + 1), String(t.getFullYear()))
+    }
+    const goToday = () => {
+        setViewYear(todayY); setViewMonth(todayM)
+        onDateSelect(String(todayD), String(todayM), String(todayY))
+    }
+    const prevM = () => viewMonth === 1 ? (setViewMonth(12), setViewYear(y => y - 1)) : setViewMonth(m => m - 1)
+    const nextM = () => viewMonth === 12 ? (setViewMonth(1), setViewYear(y => y + 1)) : setViewMonth(m => m + 1)
+
+    return (
+        <div className="cal-picker">
+            <div className="cal-picker__header">
+                <button type="button" className="cal-picker__nav" onClick={prevM}>‹</button>
+                <span className="cal-picker__month-label">{monthNames[viewMonth - 1]}</span>
+                <button type="button" className="cal-picker__nav" onClick={nextM}>›</button>
+            </div>
+            <div className="cal-picker__grid">
+                {calDayNames.map((n) => <span key={n} className="cal-picker__day-name">{n}</span>)}
+                {cells.map((cell, i) => (
+                    <button
+                        key={i}
+                        type="button"
+                        className={[
+                            'cal-picker__day',
+                            !cell.curr ? 'cal-picker__day--other' : '',
+                            cell.curr && isSelected(cell.d) ? 'cal-picker__day--selected' : '',
+                            cell.curr && isToday(cell.d) && !isSelected(cell.d) ? 'cal-picker__day--today' : '',
+                        ].filter(Boolean).join(' ')}
+                        onClick={() => cell.curr && select(cell.d)}
+                    >
+                        {cell.d}
+                    </button>
+                ))}
+            </div>
+            <div className="cal-picker__shortcuts">
+                <button type="button" className="cal-picker__shortcut" onClick={goYesterday}>Yesterday</button>
+                <button type="button" className="cal-picker__shortcut" onClick={goToday}>Today</button>
+            </div>
+        </div>
+    )
+}
 
 const initialQuickReview = {
     day: '',
@@ -193,12 +268,25 @@ function validateQuickReview(quickReview) {
     return errors
 }
 
-function ReviewForm({ isOpen, onClose }) {
-    const [currentStep, setCurrentStep] = useState(1) // to track which page of review form we're on
-    const [openSections, setOpenSections] = useState({}) // to track which advanced review sections are expanded
+function ReviewForm({ isOpen, onClose, onSubmitted }) {
+    const { venueId } = useParams()
+    const [currentStep, setCurrentStep] = useState(1)
+    const [openSections, setOpenSections] = useState({})
     const [quickReview, setQuickReview] = useState(initialQuickReview)
     const [advancedReview, setAdvancedReview] = useState(createInitialAdvancedReview)
     const [formErrors, setFormErrors] = useState({})
+    const [calOpen, setCalOpen] = useState(false)
+    const [showCancel, setShowCancel] = useState(false)
+    const calRef = useRef(null)
+
+    useEffect(() => {
+        if (!calOpen) return
+        const handler = (e) => {
+            if (calRef.current && !calRef.current.contains(e.target)) setCalOpen(false)
+        }
+        document.addEventListener('mousedown', handler)
+        return () => document.removeEventListener('mousedown', handler)
+    }, [calOpen])
 
     // if the form is closed do nothing, else reset form back to default state
     // default state is page 1 with all advanced sections closed
@@ -209,9 +297,23 @@ function ReviewForm({ isOpen, onClose }) {
 
         setCurrentStep(1)
         setOpenSections({})
-        setQuickReview(initialQuickReview)
         setAdvancedReview(createInitialAdvancedReview())
         setFormErrors({})
+        setShowCancel(false)
+
+        const currentUser = auth.currentUser
+        if (currentUser) {
+            getProfile(currentUser.uid)
+                .then((profileData) => {
+                    setQuickReview({
+                        ...initialQuickReview,
+                        accessNeeds: profileData?.accessibilityPreferences ?? [],
+                    })
+                })
+                .catch(() => setQuickReview(initialQuickReview))
+        } else {
+            setQuickReview(initialQuickReview)
+        }
     }, [isOpen])
 
     if (!isOpen) {
@@ -256,10 +358,12 @@ function ReviewForm({ isOpen, onClose }) {
         }
 
         setFormErrors({})
+        const firstId = advancedReviewSections[0]?.id
+        if (firstId) setOpenSections({ [firstId]: true })
         setCurrentStep(2)
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         const validationErrors = validateQuickReview(quickReview)
 
         if (Object.keys(validationErrors).length > 0) {
@@ -268,9 +372,68 @@ function ReviewForm({ isOpen, onClose }) {
             return
         }
 
-        window.alert('Thanks for submitting a review!')
+        const user = auth.currentUser
+        if (!user) {
+            setFormErrors({ submit: 'You must be signed in to submit a review.' })
+            return
+        }
 
-        onClose()
+        try {
+            const advancedSections = advancedReviewSections
+                .map((s) => ({ sectionId: s.id, ...advancedReview[s.id] }))
+                .filter((s) => s.rating > 0 || s.tags.length > 0 || s.summary.trim().length > 0)
+
+            await addReview(user.uid, venueId, {
+                dateOfVisit: { day: quickReview.day, month: quickReview.month, year: quickReview.year },
+                overallRating: quickReview.rating,
+                summary: quickReview.summary,
+                accessNeeds: quickReview.accessNeeds,
+                authorName: user.displayName ?? user.email ?? 'Anonymous',
+                photos: [],
+                advancedSections,
+            })
+
+            if (onSubmitted) await onSubmitted()
+            onClose()
+        } catch (err) {
+            console.error(err)
+            setFormErrors({ submit: 'Something went wrong. Please try again.' })
+        }
+    }
+
+    if (showCancel) {
+        return (
+            <div className="review-form-overlay" role="dialog" aria-modal="true" aria-label="Cancel review">
+                <div className="review-form-shell">
+                    <Header navItems={navItems} />
+                    <main className="review-form ui-container--wide">
+                        <div className="review-form__cancel-page">
+                            <h2 className="review-form__cancel-heading">Discard this review?</h2>
+                            <p className="review-form__cancel-body">
+                                Your progress will be lost. Are you sure you want to cancel?
+                            </p>
+                            <div className="review-form__cancel-actions">
+                                <button
+                                    className="review-form__button review-form__button--ghost ui-pill-button ui-pill-button--ghost"
+                                    type="button"
+                                    onClick={() => setShowCancel(false)}
+                                >
+                                    Keep Writing
+                                </button>
+                                <button
+                                    className="review-form__button review-form__button--danger ui-pill-button"
+                                    type="button"
+                                    onClick={onClose}
+                                >
+                                    Discard Review
+                                </button>
+                            </div>
+                        </div>
+                    </main>
+                    <Footer />
+                </div>
+            </div>
+        )
     }
 
     return (
@@ -295,36 +458,68 @@ function ReviewForm({ isOpen, onClose }) {
 
                     <h1 className="ui-heading-page">Write A Review</h1>
 
+                    {formErrors.submit && (
+                        <p className="review-form__error" role="alert">{formErrors.submit}</p>
+                    )}
+
                     {currentStep === 1 ? (
                         <section className="review-form__page review-form__page--intro">
                             <div className="review-form__column review-form__column--left">
                                 <div className="review-form__field-group">
                                     <label className="review-form__label">Date of Visit*</label>
-                                    <div className="review-form__date-grid">
-                                        <input
-                                            className="review-form__input"
-                                            type="text"
-                                            inputMode="numeric"
-                                            placeholder="DD"
-                                            value={quickReview.day}
-                                            onChange={(event) => setQuickReview((current) => ({ ...current, day: event.target.value }))}
-                                        />
-                                        <input
-                                            className="review-form__input"
-                                            type="text"
-                                            inputMode="numeric"
-                                            placeholder="MM"
-                                            value={quickReview.month}
-                                            onChange={(event) => setQuickReview((current) => ({ ...current, month: event.target.value }))}
-                                        />
-                                        <input
-                                            className="review-form__input"
-                                            type="text"
-                                            inputMode="numeric"
-                                            placeholder="YYYY"
-                                            value={quickReview.year}
-                                            onChange={(event) => setQuickReview((current) => ({ ...current, year: event.target.value }))}
-                                        />
+                                    <div className="review-form__date-wrap" ref={calRef}>
+                                        <div className="review-form__date-row">
+                                            <div className="review-form__date-grid">
+                                                <input
+                                                    className="review-form__input"
+                                                    type="text"
+                                                    inputMode="numeric"
+                                                    placeholder="DD"
+                                                    value={quickReview.day}
+                                                    onChange={(event) => setQuickReview((current) => ({ ...current, day: event.target.value }))}
+                                                    onFocus={() => setCalOpen(true)}
+                                                />
+                                                <input
+                                                    className="review-form__input"
+                                                    type="text"
+                                                    inputMode="numeric"
+                                                    placeholder="MM"
+                                                    value={quickReview.month}
+                                                    onChange={(event) => setQuickReview((current) => ({ ...current, month: event.target.value }))}
+                                                    onFocus={() => setCalOpen(true)}
+                                                />
+                                                <input
+                                                    className="review-form__input"
+                                                    type="text"
+                                                    inputMode="numeric"
+                                                    placeholder="YYYY"
+                                                    value={quickReview.year}
+                                                    onChange={(event) => setQuickReview((current) => ({ ...current, year: event.target.value }))}
+                                                    onFocus={() => setCalOpen(true)}
+                                                />
+                                            </div>
+                                            <button
+                                                type="button"
+                                                className="review-form__cal-btn"
+                                                onClick={() => setCalOpen((v) => !v)}
+                                                aria-label="Toggle calendar"
+                                            >
+                                                <Calendar size={16} strokeWidth={1.8} />
+                                            </button>
+                                        </div>
+                                        {calOpen && (
+                                            <div className="cal-picker-popout">
+                                                <CalendarDatePicker
+                                                    day={quickReview.day}
+                                                    month={quickReview.month}
+                                                    year={quickReview.year}
+                                                    onDateSelect={(d, m, y) => {
+                                                        setQuickReview((curr) => ({ ...curr, day: d, month: m, year: y }))
+                                                        setCalOpen(false)
+                                                    }}
+                                                />
+                                            </div>
+                                        )}
                                     </div>
                                     {formErrors.date ? <p className="review-form__error">{formErrors.date}</p> : null}
                                 </div>
@@ -378,7 +573,10 @@ function ReviewForm({ isOpen, onClose }) {
                                     />
                                 </div>
 
-                                <div className="review-form__actions review-form__actions--right">
+                                <div className="review-form__actions review-form__actions--split">
+                                    <button className="review-form__button review-form__button--cancel ui-pill-button" type="button" onClick={() => setShowCancel(true)}>
+                                        Cancel
+                                    </button>
                                     <button className="review-form__button review-form__button--ghost review-form__button--next ui-pill-button ui-pill-button--ghost" type="button" onClick={goToAdditionalDetails}>
                                         Next Page
                                     </button>

@@ -4,8 +4,8 @@ import Footer from "./components/Footer"
 import VenueCard from "./components/VenueCard"
 import { Search } from "lucide-react"
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { useState } from "react"
-import { venues } from './data/venues'
+import { useState, useEffect } from "react"
+import { getVenues } from './db'
 import { getFilters, saveFilters } from "./utils/filterStorage"
 import "./home.css"
 import filterSectionsText from './data/filter-sections/access-filters.txt?raw'
@@ -29,8 +29,8 @@ const filters = filterSections.flat().slice(0, 4)
 
 export default function HomePage() {
     const navigate = useNavigate()
-    const [searchParams] = useSearchParams()
-    const [query, setQuery] = useState("")
+    const [searchParams, setSearchParams] = useSearchParams()
+    const [query, setQuery] = useState(() => searchParams.get('q') ?? '')
     const [selectedFilters, setSelectedFilters] = useState(getFilters)
 
     const toggleFilter = (filter) => {
@@ -48,6 +48,12 @@ export default function HomePage() {
         if (query.trim()) params.set("q", query.trim())
         navigate(`/explore?${params.toString()}`)
     }
+
+    const [venues, setVenues] = useState([])
+
+    useEffect(() => {
+        getVenues().then(setVenues)
+    }, [])
 
     return (
         <div className="home-page">
@@ -74,7 +80,10 @@ export default function HomePage() {
                     <button
                         className="view-all-filters-btn"
                         type="button"
-                        onClick={() => navigate('/explore/filter')}
+                        onClick={() => {
+                            setSearchParams(query.trim() ? { q: query.trim() } : {}, { replace: true })
+                            navigate('/explore/filter')
+                        }}
                     >
                         View All Filters
                     </button>

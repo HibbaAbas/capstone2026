@@ -107,8 +107,23 @@
 
 .filter-page__bottom-row {
     display: flex;
-    justify-content: flex-end;
-    padding-top: 2rem;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 4rem;
+    gap: 12px;
+}
+
+.apply-filters-btn {
+    padding: 0.9rem 2rem;
+    background: #21821C;
+    color: #fff;
+    border: none;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.apply-filters-btn:hover {
+    background: #1a6b16;
 }
 
 .primary-action {

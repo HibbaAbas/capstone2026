@@ -323,6 +323,48 @@
     padding: 0.2rem 0.65rem;
 }
 
+.review-card__votes {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: auto;
+    margin-right: 8px;
+}
+
+.review-card__vote-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid #d0d2e0;
+    background: #f8f8fc;
+    color: #666;
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    white-space: nowrap;
+}
+
+.review-card__vote-btn:hover {
+    border-color: #4543C6;
+    color: #4543C6;
+    background: #f0f0fd;
+}
+
+.review-card__vote-btn--active-up {
+    background: #eeedfe;
+    border-color: #4543C6;
+    color: #4543C6;
+}
+
+.review-card__vote-btn--active-down {
+    background: #fdeeed;
+    border-color: #c62b2b;
+    color: #c62b2b;
+}
+
 .review-card__read {
     padding: 0.3rem 0.8rem;
     border-radius: 999px;

@@ -95,6 +95,13 @@ function FilterPage() {
                     <button className="primary-action ui-pill-button ui-pill-button--primary" type="button">
                         Request New Access Filter
                     </button>
+                    <button
+                        className="apply-filters-btn ui-pill-button"
+                        type="button"
+                        onClick={() => { saveFilters(selectedFilters); navigate(-1) }}
+                    >
+                        Apply Filters
+                    </button>
                 </div>
             </main>
 
