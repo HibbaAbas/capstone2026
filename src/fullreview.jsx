@@ -131,9 +131,7 @@ export default function FullReviewPage() {
                                 </p>
                             ) : (
                                 <>
-                                    {sec.summary?.trim() && (
-                                        <p className="fr-section__body">{sec.summary}</p>
-                                    )}
+                                    <p className="fr-section__body">{sec.summary?.trim() ?? ''}</p>
 
                                     {def.tags?.length > 0 && (
                                         <div className="fr-tags-row">

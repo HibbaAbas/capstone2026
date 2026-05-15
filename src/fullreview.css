@@ -77,7 +77,7 @@
 .fr-section {
     margin-bottom: 28px;
     padding-bottom: 28px;
-    border-bottom: 1px solid #eff0f6;
+    border-bottom: 1px solid #d8dae9;
 }
 
 .fr-section:last-child {
@@ -124,6 +124,11 @@
     color: #444;
     line-height: 1.65;
     margin: 0 0 14px;
+    background: #f9f9fd;
+    border: 1px solid #e2e3f0;
+    border-radius: 8px;
+    padding: 12px 16px;
+    min-height: 60px;
 }
 
 .fr-section__placeholder {

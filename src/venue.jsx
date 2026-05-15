@@ -6,6 +6,7 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import { getVenue, getReviewsForVenue, voteReview } from './db'
 import { auth } from './firebase'
+import { advancedReviewSections } from './data/reviewFormData'
 import './venue.css'
 
 const navItems = [
@@ -14,44 +15,51 @@ const navItems = [
     { label: 'Request', href: '#' },
 ]
 
-const accessCategories = [
-    {
-        title: 'Parking & Transport',
-        rating: 4.2,
-        items: [
-            { label: 'Dedicated On-Site Parking', available: true },
-            { label: 'Nearby Drop-Off/Pick-up', available: false },
-        ],
-    },
-    {
-        title: 'Accessible Bathrooms',
-        rating: 4.2,
-        items: [
-            { label: 'Dedicated ADA Bathrooms', available: true },
-            { label: 'Emergency Pull Cord', available: true },
-            { label: 'Grab/Support Bar', available: false },
-        ],
-    },
-    {
-        title: 'In-Venue Accessibility',
-        rating: 4.2,
-        items: [
-            { label: 'Elevator', available: true },
-            { label: 'Sensory Room', available: true },
-            { label: 'Dedicated ADA Seating', available: true },
-            { label: 'Step-Free Entrance', available: false },
-        ],
-    },
-    {
-        title: 'Staff',
-        rating: 4.2,
-        items: [
-            { label: 'Helpful Staff', available: true },
-            { label: 'Clear Communication', available: true },
-            { label: 'Dedicated ADA Staff', available: false },
-        ],
-    },
-]
+function computeAccessData(reviews) {
+    const tagData = {}
+
+    for (const review of reviews) {
+        for (const section of (review.advancedSections ?? [])) {
+            for (const tag of (section.tags ?? [])) {
+                if (!tagData[tag]) {
+                    tagData[tag] = { count: 0, lastDateObj: null, lastDate: null }
+                }
+                tagData[tag].count += 1
+
+                const { day, month, year } = review.dateOfVisit ?? {}
+                if (day && month && year) {
+                    const d = new Date(year, month - 1, day)
+                    if (!tagData[tag].lastDateObj || d > tagData[tag].lastDateObj) {
+                        tagData[tag].lastDateObj = d
+                        tagData[tag].lastDate = `${month}/${day}/${String(year).slice(-2)}`
+                    }
+                }
+            }
+        }
+    }
+
+    return advancedReviewSections.map((section) => {
+        const sectionRatings = reviews
+            .flatMap((r) => r.advancedSections ?? [])
+            .filter((s) => s.sectionId === section.id && s.rating != null)
+            .map((s) => s.rating)
+
+        const rating = sectionRatings.length > 0
+            ? parseFloat((sectionRatings.reduce((a, b) => a + b, 0) / sectionRatings.length).toFixed(1))
+            : null
+
+        const items = section.tags
+            .map((tag) => ({
+                label: tag,
+                count: tagData[tag]?.count ?? 0,
+                lastDate: tagData[tag]?.lastDate ?? null,
+                available: (tagData[tag]?.count ?? 0) > 0,
+            }))
+            .sort((a, b) => b.count - a.count)
+
+        return { title: section.title, rating, items }
+    })
+}
 
 
 function StarRating({ rating }) {
@@ -131,6 +139,8 @@ export default function VenuePage({ isReviewOpen = false }) {
         return null
     }
 
+    const accessData = computeAccessData(reviews)
+
     return (
         <div className="venue-page">
             <Header navItems={navItems} />
@@ -189,25 +199,38 @@ export default function VenuePage({ isReviewOpen = false }) {
                 </h2>
 
                 <div className="access-card">
-                    {accessCategories.map((cat) => (
+                    {accessData.map((cat) => (
                         <div className="access-category" key={cat.title}>
                             <h3 className="access-category__title">
                                 {cat.title}{' '}
-                                <Star size={13} stroke="#4543C6" fill="#4543C6" />{' '}
-                                {cat.rating}
+                                    <>
+                                    <Star size={13} stroke="#4543C6" fill="#4543C6" />{' '}
+                                    {cat.rating != null ? cat.rating : '0'}
+                                </>
                             </h3>
 
                             <ul className="access-items">
                                 {cat.items.map((item) => (
                                     <li
                                         key={item.label}
-                                        className={`access-item access-item--${item.available ? 'yes' : 'no'
-                                            }`}
+                                        className={`access-item access-item--${item.available ? 'yes' : 'no'}`}
                                     >
+                                        {item.count > 0 && (
+                                            <div className="access-item__tooltip">
+                                                <div className="access-item__tooltip-reports">
+                                                    {item.count} report{item.count !== 1 ? 's' : ''} of this feature
+                                                </div>
+                                                {item.lastDate && (
+                                                    <div className="access-item__tooltip-date">
+                                                        Last reported: {item.lastDate}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
                                         <span className="access-item__icon">
                                             {item.available ? '✓' : '✕'}
                                         </span>
-                                        {item.label}
+                                        {item.label}{item.count > 0 ? ` (${item.count})` : ''}
                                     </li>
                                 ))}
                             </ul>
@@ -285,7 +308,10 @@ export default function VenuePage({ isReviewOpen = false }) {
             <ReviewForm
                 isOpen={isReviewOpen}
                 onClose={() => navigate(`/venues/${venue.id}`)}
-                onSubmitted={() => getReviewsForVenue(venueId).then(setReviews)}
+                onSubmitted={() => {
+                    getReviewsForVenue(venueId).then(setReviews)
+                    getVenue(venueId).then(setVenue)
+                }}
             />
         </div>
     )

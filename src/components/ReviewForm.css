@@ -61,13 +61,23 @@
     display: grid;
     grid-template-columns: minmax(0, 1.1fr) minmax(20rem, 0.95fr);
     gap: clamp(2rem, 5vw, 5rem);
-    align-items: start;
+    align-items: stretch;
     padding-bottom: 2rem;
 }
 
 .review-form__column {
     display: grid;
     gap: 2rem;
+}
+
+.review-form__column--right {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.review-form__column--right .review-form__actions {
+    margin-top: auto;
 }
 
 .review-form__field-group {

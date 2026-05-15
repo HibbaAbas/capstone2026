@@ -4,7 +4,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Footer from './Footer'
 import Header from './Header'
-import { advancedReviewSections, reviewAccessNeeds } from '../data/reviewFormData'
+import { advancedReviewSections } from '../data/reviewFormData'
 import './ReviewForm.css'
 import { useParams } from 'react-router-dom'
 import { addReview, getProfile } from '../db'
@@ -328,20 +328,6 @@ function ReviewForm({ isOpen, onClose, onSubmitted }) {
         }))
     }
 
-    const toggleAccessNeed = (accessNeed) => {
-        setQuickReview((currentReview) => {
-            const currentNeeds = currentReview.accessNeeds
-            const nextNeeds = currentNeeds.includes(accessNeed)
-                ? currentNeeds.filter((currentNeed) => currentNeed !== accessNeed)
-                : [...currentNeeds, accessNeed]
-
-            return {
-                ...currentReview,
-                accessNeeds: nextNeeds,
-            }
-        })
-    }
-
     const updateAdvancedSection = (sectionId, updatedSectionData) => {
         setAdvancedReview((currentReview) => ({
             ...currentReview,
@@ -559,18 +545,6 @@ function ReviewForm({ isOpen, onClose, onSubmitted }) {
                                         <span className="review-form__upload-icon">⇪</span>
                                         <span>Select Photos From Device</span>
                                     </div>
-                                </div>
-
-                                <div className="review-form__field-group">
-                                    <p className="review-form__label">Share Your Access Needs (optional)</p>
-                                    <p className="review-form__hint">
-                                        This review includes personal experience around challenges of:
-                                    </p>
-                                    <TagList
-                                        items={reviewAccessNeeds}
-                                        selectedItems={quickReview.accessNeeds}
-                                        onToggleItem={toggleAccessNeed}
-                                    />
                                 </div>
 
                                 <div className="review-form__actions review-form__actions--split">
