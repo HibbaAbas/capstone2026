@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs, updateDoc, deleteDoc, query, where, orderBy, serverTimestamp, runTransaction } from 'firebase/firestore'
+import { collection, doc, getDoc, getDocs, updateDoc, deleteDoc, query, where, serverTimestamp, runTransaction } from 'firebase/firestore'
 import { db } from '../firebase'
 
 const reviewsCol = collection(db, 'reviews')
@@ -134,7 +134,22 @@ export async function updateReview(reviewId, reviewData) {
  */
 export async function deleteReview(reviewId) {
     if (!reviewId) throw new Error('reviewId is required')
-    await deleteDoc(doc(db, 'reviews', reviewId))
+
+    const reviewRef = doc(db, 'reviews', reviewId)
+    const reviewSnap = await getDoc(reviewRef)
+    if (!reviewSnap.exists()) throw new Error(`Review ${reviewId} not found`)
+
+    const { venueId } = reviewSnap.data()
+    await deleteDoc(reviewRef)
+
+    const remaining = (await getDocs(query(reviewsCol, where('venueId', '==', venueId)))).docs.map((d) => d.data())
+    const count = remaining.length
+    const rating = count === 0
+        ? 0
+        : parseFloat((remaining.reduce((sum, r) => sum + Number(r.overallRating), 0) / count).toFixed(1))
+
+    await updateDoc(doc(db, 'venues', venueId), { rating, reviewCount: count })
+
     return { id: reviewId, deleted: true }
 }
 

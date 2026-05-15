@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import ReviewForm from './components/ReviewForm'
 import Header from './components/Header'
 import Footer from './components/Footer'
-import { getVenue, getReviewsForVenue, voteReview } from './db'
+import { getVenue, getReviewsForVenue, deleteReview, voteReview } from './db'
 import { auth } from './firebase'
 import { advancedReviewSections } from './data/reviewFormData'
 import './venue.css'
@@ -94,6 +94,13 @@ export default function VenuePage({ isReviewOpen = false }) {
     const [venue, setVenue] = useState(null)
     const [reviews, setReviews] = useState([])
     const reviewsRef = useRef(null)
+
+    const handleDelete = async (reviewId) => {
+        if (!window.confirm('Delete this review?')) return
+        await deleteReview(reviewId)
+        setReviews((current) => current.filter((r) => r.id !== reviewId))
+        getVenue(venueId).then(setVenue)
+    }
 
     const handleVote = async (review, voteType) => {
         const userId = auth.currentUser?.uid
@@ -256,11 +263,24 @@ export default function VenuePage({ isReviewOpen = false }) {
                                     </div>
                                 </div>
 
-                                <div className="review-card__rating-wrap">
-                                    <span className="review-card__score">
-                                        {review.overallRating}
-                                    </span>
-                                    <StarRating rating={review.overallRating} />
+                                <div className="review-card__header-right">
+                                    <div className="review-card__rating-wrap">
+                                        <span className="review-card__score">
+                                            {review.overallRating}
+                                        </span>
+                                        <StarRating rating={review.overallRating} />
+                                    </div>
+
+                                    {auth.currentUser?.uid === review.userId && (
+                                        <button
+                                            className="review-card__delete"
+                                            type="button"
+                                            onClick={() => handleDelete(review.id)}
+                                            aria-label="Delete review"
+                                        >
+                                            Delete 
+                                        </button>
+                                    )}
                                 </div>
                             </div>
 

@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Star, UserCircle } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Star, UserCircle } from 'lucide-react'
 import { getReview, getVenue } from './db'
 import { advancedReviewSections } from './data/reviewFormData'
 import Header from './components/Header'
@@ -42,6 +42,18 @@ export default function FullReviewPage() {
     const { venueId, reviewId } = useParams()
     const [review, setReview] = useState(null)
     const [venue, setVenue] = useState(null)
+    const [lightbox, setLightbox] = useState(null)
+    const photoScrollRef = useRef(null)
+    const scrollPhotos = (dir) => photoScrollRef.current?.scrollBy({ left: dir * 220, behavior: 'smooth' })
+
+    const closeLightbox = useCallback(() => setLightbox(null), [])
+
+    useEffect(() => {
+        if (lightbox === null) return
+        const handler = (e) => { if (e.key === 'Escape') closeLightbox() }
+        window.addEventListener('keydown', handler)
+        return () => window.removeEventListener('keydown', handler)
+    }, [lightbox, closeLightbox])
 
     useEffect(() => {
         getReview(reviewId)
@@ -88,12 +100,29 @@ export default function FullReviewPage() {
                 {review.photos?.length > 0 && (
                     <section className="fr-section">
                         <h2 className="fr-section__title">Review Images</h2>
-                        <div className="fr-images">
-                            {review.photos.map((src, i) => (
-                                <img key={i} src={src} alt={`Review photo ${i + 1}`} className="fr-image" />
-                            ))}
+                        <div className="fr-images-row">
+                            <button type="button" className="fr-scroll-btn fr-scroll-btn--left" onClick={() => scrollPhotos(-1)}><ChevronLeft size={18} strokeWidth={2} /></button>
+                            <div className="fr-images" ref={photoScrollRef}>
+                                {review.photos.map((src, i) => (
+                                    <img
+                                        key={i}
+                                        src={src}
+                                        alt={`Review photo ${i + 1}`}
+                                        className="fr-image"
+                                        onClick={() => setLightbox(src)}
+                                    />
+                                ))}
+                            </div>
+                            <button type="button" className="fr-scroll-btn fr-scroll-btn--right" onClick={() => scrollPhotos(1)}><ChevronRight size={18} strokeWidth={2} /></button>
                         </div>
                     </section>
+                )}
+
+                {lightbox && (
+                    <div className="fr-lightbox" onClick={closeLightbox}>
+                        <img src={lightbox} alt="Expanded" className="fr-lightbox__img" onClick={(e) => e.stopPropagation()} />
+                        <button className="fr-lightbox__close" onClick={closeLightbox} aria-label="Close">✕</button>
+                    </div>
                 )}
 
                 {/* ── Overall experience ── */}

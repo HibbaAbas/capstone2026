@@ -139,11 +139,48 @@
 }
 
 /* ── Images ── */
+.fr-images-row {
+    position: relative;
+    margin-top: 12px;
+}
+
+.fr-scroll-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #fff;
+    border: 1px solid #d0d2e0;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #444;
+    z-index: 1;
+    transition: background 0.15s, color 0.15s;
+}
+
+.fr-scroll-btn--left {
+    left: -40px;
+}
+
+.fr-scroll-btn--right {
+    right: -40px;
+}
+
+.fr-scroll-btn:hover {
+    background: #f0f1f8;
+    border-color: #4543C6;
+    color: #4543C6;
+}
+
 .fr-images {
     display: flex;
     gap: 12px;
-    flex-wrap: wrap;
-    margin-top: 12px;
+    flex-wrap: nowrap;
+    overflow: hidden;
 }
 
 .fr-image {
@@ -151,6 +188,50 @@
     height: 140px;
     object-fit: cover;
     border-radius: 10px;
+    cursor: pointer;
+    transition: opacity 0.15s;
+}
+
+.fr-image:hover {
+    opacity: 0.85;
+}
+
+.fr-lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fr-lightbox__img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 10px;
+    object-fit: contain;
+}
+
+.fr-lightbox__close {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fr-lightbox__close:hover {
+    background: rgba(255, 255, 255, 0.3);
 }
 
 /* ── Tag checklist ── */

@@ -277,7 +277,9 @@ function ReviewForm({ isOpen, onClose, onSubmitted }) {
     const [formErrors, setFormErrors] = useState({})
     const [calOpen, setCalOpen] = useState(false)
     const [showCancel, setShowCancel] = useState(false)
+    const [photoFiles, setPhotoFiles] = useState([])
     const calRef = useRef(null)
+    const fileInputRef = useRef(null)
 
     useEffect(() => {
         if (!calOpen) return
@@ -300,6 +302,7 @@ function ReviewForm({ isOpen, onClose, onSubmitted }) {
         setAdvancedReview(createInitialAdvancedReview())
         setFormErrors({})
         setShowCancel(false)
+        setPhotoFiles([])
 
         const currentUser = auth.currentUser
         if (currentUser) {
@@ -369,13 +372,31 @@ function ReviewForm({ isOpen, onClose, onSubmitted }) {
                 .map((s) => ({ sectionId: s.id, ...advancedReview[s.id] }))
                 .filter((s) => s.rating > 0 || s.tags.length > 0 || s.summary.trim().length > 0)
 
+            const compressImage = (file) => new Promise((resolve) => {
+                const img = new Image()
+                const url = URL.createObjectURL(file)
+                img.onload = () => {
+                    const maxW = 600
+                    const scale = Math.min(1, maxW / img.width)
+                    const canvas = document.createElement('canvas')
+                    canvas.width = img.width * scale
+                    canvas.height = img.height * scale
+                    canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height)
+                    URL.revokeObjectURL(url)
+                    resolve(canvas.toDataURL('image/jpeg', 0.6))
+                }
+                img.src = url
+            })
+
+            const photoURLs = await Promise.all(photoFiles.map(compressImage))
+
             await addReview(user.uid, venueId, {
                 dateOfVisit: { day: quickReview.day, month: quickReview.month, year: quickReview.year },
                 overallRating: quickReview.rating,
                 summary: quickReview.summary,
                 accessNeeds: quickReview.accessNeeds,
                 authorName: user.displayName ?? user.email ?? 'Anonymous',
-                photos: [],
+                photos: photoURLs,
                 advancedSections,
             })
 
@@ -460,18 +481,18 @@ function ReviewForm({ isOpen, onClose, onSubmitted }) {
                                                     className="review-form__input"
                                                     type="text"
                                                     inputMode="numeric"
-                                                    placeholder="DD"
-                                                    value={quickReview.day}
-                                                    onChange={(event) => setQuickReview((current) => ({ ...current, day: event.target.value }))}
+                                                    placeholder="MM"
+                                                    value={quickReview.month}
+                                                    onChange={(e) => setQuickReview((c) => ({ ...c, month: e.target.value.replace(/\D/g, '').slice(0, 2) }))}
                                                     onFocus={() => setCalOpen(true)}
                                                 />
                                                 <input
                                                     className="review-form__input"
                                                     type="text"
                                                     inputMode="numeric"
-                                                    placeholder="MM"
-                                                    value={quickReview.month}
-                                                    onChange={(event) => setQuickReview((current) => ({ ...current, month: event.target.value }))}
+                                                    placeholder="DD"
+                                                    value={quickReview.day}
+                                                    onChange={(e) => setQuickReview((c) => ({ ...c, day: e.target.value.replace(/\D/g, '').slice(0, 2) }))}
                                                     onFocus={() => setCalOpen(true)}
                                                 />
                                                 <input
@@ -480,7 +501,7 @@ function ReviewForm({ isOpen, onClose, onSubmitted }) {
                                                     inputMode="numeric"
                                                     placeholder="YYYY"
                                                     value={quickReview.year}
-                                                    onChange={(event) => setQuickReview((current) => ({ ...current, year: event.target.value }))}
+                                                    onChange={(e) => setQuickReview((c) => ({ ...c, year: e.target.value.replace(/\D/g, '').slice(0, 4) }))}
                                                     onFocus={() => setCalOpen(true)}
                                                 />
                                             </div>
@@ -541,9 +562,47 @@ function ReviewForm({ isOpen, onClose, onSubmitted }) {
                             <div className="review-form__column review-form__column--right">
                                 <div className="review-form__field-group">
                                     <p className="review-form__label">Upload Relevant Photos (optional)</p>
-                                    <div className="review-form__upload-box" aria-hidden="true">
-                                        <span className="review-form__upload-icon">⇪</span>
-                                        <span>Select Photos From Device</span>
+                                    <div className="review-form__photo-section">
+                                        <input
+                                            ref={fileInputRef}
+                                            type="file"
+                                            accept="image/*"
+                                            multiple
+                                            style={{ display: 'none' }}
+                                            onChange={(e) => {
+                                                const incoming = Array.from(e.target.files)
+                                                setPhotoFiles((prev) => {
+                                                    const existing = new Set(prev.map((f) => f.name + f.size))
+                                                    return [...prev, ...incoming.filter((f) => !existing.has(f.name + f.size))]
+                                                })
+                                                e.target.value = ''
+                                            }}
+                                        />
+                                        <button
+                                            type="button"
+                                            className="review-form__upload-box"
+                                            onClick={() => fileInputRef.current?.click()}
+                                        >
+                                            <span className="review-form__upload-icon">⇪</span>
+                                            <span>Select Photos From Device</span>
+                                        </button>
+                                        {photoFiles.length > 0 && (
+                                            <div className="review-form__photo-previews">
+                                                {photoFiles.map((file, i) => (
+                                                    <div key={i} className="review-form__photo-thumb">
+                                                        <img src={URL.createObjectURL(file)} alt={file.name} />
+                                                        <button
+                                                            type="button"
+                                                            className="review-form__photo-remove"
+                                                            onClick={() => setPhotoFiles((prev) => prev.filter((_, idx) => idx !== i))}
+                                                            aria-label="Remove photo"
+                                                        >
+                                                            ✕
+                                                        </button>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
 
